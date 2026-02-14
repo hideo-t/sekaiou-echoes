@@ -1,0 +1,2207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>世界王 ― Echoes of the Forgotten</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a2e;
+      --text-primary: #e0ddd5;
+      --text-secondary: #8a8a9a;
+      --accent: #4a9eff;
+      --accent-dim: #2a5a9a;
+      --gold: #c4a35a;
+      --chapter-border: #2a2a3e;
+      --serif: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+      --sans: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.95;
+      min-height: 100vh;
+    }
+
+    /* ─── Header ─── */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 100px 20px 80px;
+      background: linear-gradient(180deg, #1a2a4a 0%, #0f1a2f 100%);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(120,180,255,0.15) 0%, transparent 70%);
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      text-shadow: 0 2px 20px rgba(100,160,255,0.3);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .hero-sub {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: #b0c4de;
+      letter-spacing: 0.15em;
+    }
+    .hero-line {
+      width: 60px; height: 1px;
+      background: var(--gold);
+      margin: 28px auto 0;
+    }
+
+    /* ─── Navigation ─── */
+    .nav-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--chapter-border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow-x: auto;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+    }
+    .nav-bar .nav-title {
+      color: var(--gold);
+      font-weight: 700;
+      white-space: nowrap;
+      margin-right: 8px;
+    }
+    .nav-bar a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 4px 10px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .nav-bar a:hover {
+      color: var(--accent);
+      background: rgba(74,158,255,0.1);
+    }
+
+    /* ─── TOC ─── */
+    .toc {
+      max-width: 700px;
+      margin: 60px auto 40px;
+      padding: 0 20px;
+    }
+    .toc h3 {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .toc-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 18px;
+      color: var(--text-primary);
+      text-decoration: none;
+      border-left: 2px solid var(--chapter-border);
+      transition: all 0.25s;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+    }
+    .toc-item:hover {
+      border-color: var(--accent);
+      background: rgba(74,158,255,0.04);
+      padding-left: 24px;
+    }
+    .toc-num {
+      font-size: 0.75rem;
+      color: var(--accent-dim);
+      font-weight: 700;
+      min-width: 20px;
+    }
+
+    /* ─── Characters ─── */
+    .characters {
+      max-width: 700px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+    }
+    .characters h3 {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .char-card {
+      background: var(--bg-card);
+      border: 1px solid var(--chapter-border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .char-name {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .char-role {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .char-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ─── Divider ─── */
+    .section-divider {
+      width: 40px; height: 1px;
+      background: var(--chapter-border);
+      margin: 0 auto;
+    }
+
+    /* ─── Chapter ─── */
+    .chapter {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 80px 20px;
+      border-top: 1px solid var(--chapter-border);
+    }
+    .chapter-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .chapter-number {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--accent-dim);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .chapter-title {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .chapter-image {
+      margin: 0 -20px 40px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--chapter-border);
+    }
+    .chapter-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.92;
+    }
+    .chapter-body p {
+      margin-bottom: 1.2em;
+      text-indent: 1em;
+      text-align: justify;
+    }
+    .chapter-body p:empty {
+      display: none;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      text-align: center;
+      padding: 60px 20px;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--chapter-border);
+    }
+
+    /* ─── Reading mode toggle ─── */
+    .mode-toggle {
+      position: fixed; bottom: 20px; right: 20px; z-index: 200;
+      background: var(--bg-card);
+      border: 1px solid var(--chapter-border);
+      color: var(--text-secondary);
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mode-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ─── Light mode ─── */
+    body.light {
+      --bg-primary: #f5f0e8;
+      --bg-secondary: #ebe5d9;
+      --bg-card: #fff;
+      --text-primary: #2a2a2a;
+      --text-secondary: #6a6a6a;
+      --chapter-border: #d5cfc3;
+      --accent: #2563eb;
+      --accent-dim: #6b9eff;
+      --gold: #8a6d2b;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      body { font-size: 15px; }
+      .chapter { padding: 50px 16px; }
+    }
+
+    /* ─── Scroll progress ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; z-index: 200;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      width: 0%;
+      transition: width 0.1s;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="progress"></div>
+
+  <header class="hero">
+    <h1 class="hero-title">世界王 ― Echoes of the Forgotten</h1>
+    <p class="hero-sub">GENERATED WITH LOCAL AI — OLLAMA + STABLE DIFFUSION</p>
+    <div class="hero-line"></div>
+  </header>
+
+  <nav class="nav-bar">
+    <span class="nav-title">目次</span>
+    <a href="#chapter-1">第1章</a><a href="#chapter-2">第2章</a><a href="#chapter-3">第3章</a><a href="#chapter-4">第4章</a><a href="#chapter-5">第5章</a><a href="#chapter-6">第6章</a><a href="#chapter-7">第7章</a><a href="#chapter-8">第8章</a><a href="#chapter-9">第9章</a><a href="#chapter-10">第10章</a><a href="#chapter-11">第11章</a><a href="#chapter-12">第12章</a><a href="#chapter-13">第13章</a><a href="#chapter-14">第14章</a><a href="#chapter-15">第15章</a><a href="#chapter-16">第16章</a><a href="#chapter-17">第17章</a><a href="#chapter-18">第18章</a><a href="#chapter-19">第19章</a><a href="#chapter-20">第20章</a><a href="#chapter-21">第21章</a><a href="#chapter-22">第22章</a><a href="#chapter-23">第23章</a><a href="#chapter-24">第24章</a><a href="#chapter-25">第25章</a><a href="#chapter-26">第26章</a><a href="#chapter-27">第27章</a><a href="#chapter-28">第28章</a><a href="#chapter-29">第29章</a><a href="#chapter-30">第30章</a>
+  </nav>
+
+  <div class="toc">
+    <h3>— 目次 —</h3>
+        <a href="#chapter-1" class="toc-item"><span class="toc-num">1</span><span class="toc-label">雨音の街</span></a>
+        <a href="#chapter-2" class="toc-item"><span class="toc-num">2</span><span class="toc-label">カセットの沈黙</span></a>
+        <a href="#chapter-3" class="toc-item"><span class="toc-num">3</span><span class="toc-label">覚醒前夜</span></a>
+        <a href="#chapter-4" class="toc-item"><span class="toc-num">4</span><span class="toc-label">A.C.O.U.S.Tの影</span></a>
+        <a href="#chapter-5" class="toc-item"><span class="toc-num">5</span><span class="toc-label">上書きの誘惑</span></a>
+        <a href="#chapter-6" class="toc-item"><span class="toc-num">6</span><span class="toc-label">塔を見た日</span></a>
+        <a href="#chapter-7" class="toc-item"><span class="toc-num">7</span><span class="toc-label">再録の代償</span></a>
+        <a href="#chapter-8" class="toc-item"><span class="toc-num">8</span><span class="toc-label">消さない選択</span></a>
+        <a href="#chapter-9" class="toc-item"><span class="toc-num">9</span><span class="toc-label">冠を外す</span></a>
+        <a href="#chapter-10" class="toc-item"><span class="toc-num">10</span><span class="toc-label">不完全でいい</span></a>
+        <a href="#chapter-11" class="toc-item"><span class="toc-num">11</span><span class="toc-label">止まらない再生</span></a>
+        <a href="#chapter-12" class="toc-item"><span class="toc-num">12</span><span class="toc-label">言えなかった言葉</span></a>
+        <a href="#chapter-13" class="toc-item"><span class="toc-num">13</span><span class="toc-label">見えない階段</span></a>
+        <a href="#chapter-14" class="toc-item"><span class="toc-num">14</span><span class="toc-label">上書きの誘惑 II</span></a>
+        <a href="#chapter-15" class="toc-item"><span class="toc-num">15</span><span class="toc-label">消えた理由</span></a>
+        <a href="#chapter-16" class="toc-item"><span class="toc-num">16</span><span class="toc-label">残響の市場</span></a>
+        <a href="#chapter-17" class="toc-item"><span class="toc-num">17</span><span class="toc-label">王を名乗る者</span></a>
+        <a href="#chapter-18" class="toc-item"><span class="toc-num">18</span><span class="toc-label">再録の代償 II</span></a>
+        <a href="#chapter-19" class="toc-item"><span class="toc-num">19</span><span class="toc-label">反転する夜</span></a>
+        <a href="#chapter-20" class="toc-item"><span class="toc-num">20</span><span class="toc-label">触れてはいけない音</span></a>
+        <a href="#chapter-21" class="toc-item"><span class="toc-num">21</span><span class="toc-label">第一階層：敗れた戦士</span></a>
+        <a href="#chapter-22" class="toc-item"><span class="toc-num">22</span><span class="toc-label">第二階層：沈黙の学者</span></a>
+        <a href="#chapter-23" class="toc-item"><span class="toc-num">23</span><span class="toc-label">第三階層：記録する秘書</span></a>
+        <a href="#chapter-24" class="toc-item"><span class="toc-num">24</span><span class="toc-label">第四階層：未来保存室</span></a>
+        <a href="#chapter-25" class="toc-item"><span class="toc-num">25</span><span class="toc-label">ゼロテープ</span></a>
+        <a href="#chapter-26" class="toc-item"><span class="toc-num">26</span><span class="toc-label">原初のノイズ</span></a>
+        <a href="#chapter-27" class="toc-item"><span class="toc-num">27</span><span class="toc-label">王の分裂</span></a>
+        <a href="#chapter-28" class="toc-item"><span class="toc-num">28</span><span class="toc-label">増殖する塔</span></a>
+        <a href="#chapter-29" class="toc-item"><span class="toc-num">29</span><span class="toc-label">消された選択肢</span></a>
+        <a href="#chapter-30" class="toc-item"><span class="toc-num">30</span><span class="toc-label">冠の重さ</span></a>
+  </div>
+
+  <div class="characters">
+    <h3>— 登場人物 —</h3>
+    <div class="char-grid">
+      <div class="char-card">
+        <div class="char-name">リコ</div>
+        <div class="char-role">主人公 / 19歳の少女</div>
+        <div class="char-desc">怖がりで臆病だが、音楽が好きで旅に憧れる普通の人間。
+特別な力はない。ただ未完を消そうとしない強さがある。
+幼い頃、旅立つ誰かに「行かないで」と言えず「行っていいよ」と言った未完を胸に抱える。
+</div>
+      </div>
+      <div class="char-card">
+        <div class="char-name">世界王</div>
+        <div class="char-role">世界の最初の未完から生まれた存在</div>
+        <div class="char-desc">静かで多くを語らない。万能ではなく、人類の矛盾そのもの。
+世界を正そうとしない。願いを叶える存在でもない。
+「願いを選べる状態」を守る存在。王冠を配ることが目的。
+</div>
+      </div>
+      <div class="char-card">
+        <div class="char-name">A.C.O.U.S.T</div>
+        <div class="char-role">対立勢力 / 秩序の守護者</div>
+        <div class="char-desc">敵ではない。未完が争いを生むなら消せばいい、という合理的で優しい思想。
+理性的で、正しく見える瞬間がある。悪役にはしない。
+「静寂こそ平和」と信じている。
+</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <main>
+
+    <section class="chapter" id="chapter-1">
+      <div class="chapter-header">
+        <span class="chapter-number">第1章</span>
+        <h2 class="chapter-title">雨音の街</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_01.png" alt="第1章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒がネオンの光を打ち消す。青と赤が溶け合い、アスファルトに虚ろな色を作り出す。路地裏では排水溝から湿った音が聞こえる。路面には細かい水溜まりができ始め、靴底がそれを掻き分けた。</p>
+
+        <p>リコは首の後ろにあるイヤフォンを軽く引っぱる。メロディーが頭の中に広がり、歩みは自然に早まる。曲は静けさの中にも温もりがあり、彼女の心には安心感を与える。</p>
+
+        <p>「もうすぐ家だね」</p>
+
+        <p>路地裏の出口近くで、突然耳を掠める音があった。それは雨粒と風だけでは説明できない妙なノイズだった。リコが足を止めた瞬間、それが再び聞こえた。少し離れた狭い路上から。</p>
+
+        <p>彼女はそちらを見つめると同時に、手探りでカセットプレイヤーのボタンを探る。「停止」を押すように思われたが、その小さな音だけではなく何かが心地よく軋んだ。</p>
+
+        <p>路地裏へと進む。水溜まりに靴跡を残しながら、リコは自分が何をしているのか理解できずにいた。ただそのノイズの源を探していた。雨粒が肩掛けカバンにつかさわる感触と共に、彼女の手の中には古いプラスチック製のカセットテープがあった。</p>
+
+        <p>「誰かの落としたかな」</p>
+
+        <p>それは薄汚れた封筒から出てきた。文字は消えてしまっているのか、あるいは最初から何もなかったように見えた。「あ」と小さく呟きながら、リコは拾い上げたテープを一度眺めるだけでもうそれを放すことはない。</p>
+
+        <p>「これは…何だ？」</p>
+
+        <p>再生ボタンに指が触れる寸前まで進む。彼女の心臓の鼓動と合わせるように音楽プレイヤーからメロディーが流れ出す。その瞬間、街全体が一息ついたかのように静寂となる。リコはカセットテープを手の中で握りしめた。</p>
+
+        <p>「行かないで…」</p>
+
+        <p>雨粒が再び路面に降り注ぎ始めた時、彼女の視界には路地裏の奥から小さな光があったように映る。それは消えようとしていた街灯か、それとも何か別のものか。</p>
+
+        <p>リコはその方向へと一歩踏み出す。</p>
+        <p>しかし、その先にあるのはただ雨粒だけだった。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-2">
+      <div class="chapter-header">
+        <span class="chapter-number">第2章</span>
+        <h2 class="chapter-title">カセットの沈黙</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_02.png" alt="第2章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が音もなく降り注ぐ夜。街の喧騒も静まり、ネオンの光だけが湿った空気を照らす。リコは古いカセットテープに触れた手から震えを感じた。</p>
+
+        <p>「もう一度試してみよう」と小さな声で呟き、プレイヤーの電源ボタンを押した。</p>
+        <p>しかし音が出ない。周囲全ての音が一瞬で消えるように静寂となった。</p>
+
+        <p>心臓の鼓動だけが明確に聞こえてくる。肺いっぱいに空気を取り入れる度に、鼓膜の中で脈打ちを感じる。</p>
+        <p>雨粒が地面を叩く微かな音。しかし街全体からその存在すらも失われたかのように消え去っていた。</p>
+
+        <p>プレイヤーのスピーカーボリュームを最大にする。それでもただ静けさだけが続く。</p>
+        <p>「こんなことは…」</p>
+        <p>ポケットの中、カセットテープが回転する音だけが聞こえた。</p>
+
+        <p>光景は揺らぎ始める。</p>
+        <p>アスファルトに反射する青と赤のネオンが歪み、滲んでいく。遠近法を無視した空間。</p>
+        <p>「あ…」</p>
+        <p>リコの足元から雨水が立ち上り始め、音波のように広がっていく。</p>
+
+        <p>街灯の明かりが点滅し始めた。雨粒はより強い光となって降り注ぐ。その中で人々や建物が消え去る。</p>
+        <p>ここはもう現実ではない。</p>
+        <p>「何…」</p>
+        <p>周囲に残響層なる別の世界が出現したかのように見えた。</p>
+
+        <p>リコの足元、カセットテープを握った手から光が漏れ出す。それは音波のような形をしており、虚空へと消えていく。</p>
+
+        <p>雨粒は水鏡となって浮遊し始め、その中で他の景色が映るようになる。</p>
+        <p>「行かない…」</p>
+        <p>視界の中に現れた誰かの姿。</p>
+        <p>あの日の未完を思い出し、足下に広がる光景を見つめる。</p>
+
+        <p>リコはただ震えながら、手の中にあるカセットテープを見て立ち尽くした。その中に何があったのかを考えると同時に背筋が寒くなった。</p>
+        <p>「行かないで…」</p>
+        <p>しかしもう遅い。視界の端から、世界王の姿が消えていくように見える。</p>
+
+        <p>光景は再び現実へと戻る。</p>
+        <p>ただ雨粒だけが再び地面を叩き始めている。</p>
+        <p>「行っていいよ」</p>
+
+        <p>リコは立ち尽くしたまま、カセットテープを握りしめながら静かに呟いた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-3">
+      <div class="chapter-header">
+        <span class="chapter-number">第3章</span>
+        <h2 class="chapter-title">覚醒前夜</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_03.png" alt="第3章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒がネオンの灯りを弾き散らす音。アスファルトに反射する青と赤の光。夜更けの街には人々の足音以外、静寂だけが広がる。</p>
+
+        <p>リコは公園へ向かう道を歩く。街路樹から滴る雨粒が服につき、冷たさが肌に張り付いていく。手の中にあるカセットテープが異常に熱い。その光り輝く表面から微かな音楽が聞こえてくるようだ。</p>
+
+        <p>公園のベンチでリコは腰を下ろす。「行っていいよ」という言葉が喉まで出かかったとき、視界が歪んだ。周囲の人々の上に淡い色調のノイズのようなものが浮かび上がる。それは人々の未完な願いや想いの形。</p>
+
+        <p>雨音と照明灯からの光を浴びて公園は薄暗く静まり返っている。ベンチから見える通りには、車が一臺も通らない。風に揺れる木々からは、遠くで誰かが口笛を吹いている音だけ聞こえる。</p>
+
+        <p>リコの視界は再び現実に戻ったとき、突然目の前に人影があった。「何、見てるの？」と声がした。白銀の長い髪を持つ不思議な人物だ。瞳には静かな寂しさがあり、表情は穏やかだが謎めいていた。</p>
+
+        <p>「誰？」「君に会わなければならないって言った人がいる」その人物は淡々とした口調で続ける。「名前なんて重要じゃないからね」</p>
+
+        <p>リコの視界が再び歪み始めると、「待てよ」という声。次いで光と音楽、そして遠くへ消える人々の姿だけが残る。</p>
+
+        <p>「今夜見たものは秘密だ」白いロングコートを纏った人物は静かに微笑んだ。「何か聞こえなくなったかな？」</p>
+
+        <p>リコは何も答えずただ黙って頷いただけだった。世界王との出会いが、未完の光り輝く残響の中で始まる。</p>
+
+        <p>公園の木々からは湿気とともに土の匂いが漂ってくる。ベンチを包む雨粒たちが静かに揺れ動いていく。リコはポケットから古いカセットテープを取り出す。「何か変だ…」と彼女は呟いた。「これ、再生できないのに」</p>
+
+        <p>「世界王」と名乗ったその人物は何も答えないまま立ち去る。残された雨粒たちは静かに地面へ吸い込まれていく。</p>
+
+        <p>リコの心臓が微かな鼓動を響き渡す。公園から漏れる光と音楽が、彼女の中に新たな何かを取り戻したような気配がある。</p>
+        <p>その夜、街は依然としてネオンと共に雨粒たちで覆われていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-4">
+      <div class="chapter-header">
+        <span class="chapter-number">第4章</span>
+        <h2 class="chapter-title">A.C.O.U.S.Tの影</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_04.png" alt="第4章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が地面のアスファルトに柔らかく跳ね返る音。公園の木々から零れる葉っぱと混じった水滴の匂い。リコはカセットテープを持ち、その中にある未完を思いつつ歩み続ける。黒いスーツを纏う男が彼女に近づく。</p>
+
+        <p>「君には会わなければならない」といった言葉が耳元でささやかれた日から、雨の音と香りは変わらぬままだったが、リコ自身の中に何かが生まれていた。それはまるで無形の存在のように振る舞い、彼女の視界を不意に侵入する。</p>
+
+        <p>カフェの一室では、静寂が広がっていた。白壁と黒いテーブル、カーテンからは薄暗く緑色の光線が差し込んでくる。そこへ、リコの前にスーツ姿の男が現れた。「君は知らなかったかもしれない」と彼女に話しかける。</p>
+
+        <p>「未完を抱えたままだと、それが争いを生むことがありますよ」</p>
+        <p>男は静かな口調で続ける。</p>
+        <p>「それでも消すことが正義だとは言いません。しかし、平和のために選択できるなら……」</p>
+
+        <p>リコの瞳が光を受けたカセットテープへと向かう。</p>
+        <p>「でも君たちも分かっているよね？」</p>
+        <p>彼女は低い声で返答する。</p>
+
+        <p>男は頷き、「私たちには別の視点があります」と答える。「未完が紛れもない喜びや悲しみを生むことは理解しています。しかし、それが争いへと繋がるとき……それは避けられない苦難です」</p>
+
+        <p>雨粒の音響に混ざり、カフェから聞こえてくるのは男たちの静かな声だけ。</p>
+        <p>「世界王からの言葉を受け取った君は、それを利用しようとしていませんか？」</p>
+        <p>リコは視線を外し、窓際へと向かった。「消したいけど……その先には何があるのかわからない」</p>
+
+        <p>男は小さな装置を取り出す。そこから微細な音波が漏れ出し、「未完の兆候」といった文字が光る。</p>
+        <p>「それは危険です」</p>
+        <p>男の言葉は穏やかだが、リコの中に違和感を生む。「しかし君たちには絶対的な自信がある？」</p>
+
+        <p>雨粒が窓ガラスに弾ける音。アスファルトから立ち上る水蒸気。</p>
+        <p>「平和を守るために必要なら……その選択は正当化できる」と男は続ける。</p>
+
+        <p>リコの手がカセットテープへと伸び、彼女はそれを握り締めた。「それでも消すことを決断するには時間がかかる」</p>
+        <p>カフェの中での会話は静寂の中に溶けた。</p>
+        <p>雨粒はまだ地面に落ち続け、ネオンを叩く音も変わらぬまま。</p>
+
+        <p>リコの視界が薄暗い光線と音波で満たされながら、「これは再生できないのに」と呟き、彼女はカフェを出て歩み出す。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-5">
+      <div class="chapter-header">
+        <span class="chapter-number">第5章</span>
+        <h2 class="chapter-title">上書きの誘惑</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_05.png" alt="第5章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が静かな鼓動のように地面と肌の間で弾ける音。アスファルトに吸収された水分が夜気を冷たく染め上げる。街角に流れるネオン灯りが、薄明かりの中でも影を作る。</p>
+
+        <p>リコは古いカセットプレイヤーを取り出す。手から伝わる錆びた金属の感覚と、微かな湿度がある空気が交差する。「再生」というボタンを押す指先には雨粒が乗っていた。</p>
+
+        <p>音が響き始める。それは過去の未完であり現在でもある。小さな子どもたちが公園で走り回る声、遠くから聞こえる笑い声に混じって鳴らされる自転車のベルの音。「あの日」という名前の残響は雨粒と同じ大きさだった。</p>
+
+        <p>プレイヤーを手元に留め、「上書き」ボタンを触ると、少し迷う。しかし彼女には今日の雨が特別な何かを思い出させていたから、その一瞬は指先で消去できるような気がした。再び再生し、未完を耳に入れ、それを覆い隠すように上書き。</p>
+
+        <p>音楽と笑い声が途切れる。静寂に包まれた街角には雨粒の落ちる音だけが響く。「これが……楽になるのか」と彼女は呟きながら手の中のカセットテープを眺める。</p>
+
+        <p>しかし、何か違う気がする。それがあなただけでなく他人にも適用されると感じてしまうからだ。この空間に漂う無重力のような喪失感。</p>
+
+        <p>リコが手元を見つめていると、自分の胸の中に穴が開いたような空虚さを感じる。「行っていいよ」と言った理由の所在ないまま、それまでの声や笑いはただ薄暗く揺らぐだけだった。彼女はそれを理解したのか否かわからない。ただ体の中から力が抜けていく感覚に気づいただけ。</p>
+
+        <p>手を胸に当てて立ち尽くす。掌には雨粒と汗の混ざった感触がある。「行かないで」と言いたかった自分は何処へ行ったのだろう、彼女は問う。しかし答えは風に乗って流れて行くように感じた。静寂が一層深まる。</p>
+
+        <p>再びカセットプレイヤーを握る手が震える。</p>
+        <p>それでもまだ、彼女の心には雨粒のように未完な何かが残っていた。</p>
+        <p>街角に残された光と影の間で、リコはそのカセットテープを見つめ続けた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-6">
+      <div class="chapter-header">
+        <span class="chapter-number">第6章</span>
+        <h2 class="chapter-title">塔を見た日</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_06.png" alt="第6章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が次々と降り注ぐ都市。灰色の空から落ちてくる無数の線が、街並みに揺らめきを刻む。アスファルトが湿った冷たさでリコの足元を包んでいた。青白いネオン光が、雨粒を弾く音とともに地面へと反射する。その光は、まるで古いレコード盤のように、円を描いて街角に広がっていた。</p>
+
+        <p>路地裏の奥深くまで続く道を進むリコだったが、視界の端から不気味な存在感を感じた。それは遠い夜空を見上げるような印象を与えた。回り込むように塔層へと導かれる。その先には高々と聳え立つ巨大な塔があった。</p>
+
+        <p>「残響」と名付けられたこの世界でも、最も特異で不気味な場所がここだった。「願いの集積構造」それ自体は光を放ち、しかし同時に夜闇の中で薄暗くも見える。その存在感は周囲全てを圧倒し、リコの心臓に冷たい鼓動を刻んでいた。</p>
+
+        <p>塔の足元で立ち止まる彼女には、世界王が静かに佇んでいた。「あなたはここへ来ることが出来た」と口調を変えずに言った。その声色は風に乗って来た雨粒と共にリコの耳を撫でる。そして、「この先は君が選ぶ」世界王は背中を向け、消えようとしていた。</p>
+
+        <p>「待ってください……」</p>
+
+        <p>リコが叫んだ言葉も、すぐに遠ざかる水音に飲み込まれていく。</p>
+
+        <p>塔を見上げると、その高さと威圧感には語りつくせないものが溢れていた。底から上へと広がる螺旋状の構造。カセットテープのような願いの断片たちが回転し、それぞれの記憶を刻み込んでいく。</p>
+
+        <p>世界王はもうそこには無く、ただ塔だけが残っていた。雨粒がその表面に当たると、音もなく光り輝いてまた消えてしまう。「未完」という言葉がリコの胸中で渦巻いた。</p>
+        <p>回るカセットテープの音色と共に、世界王の最後の一瞥と微笑みを思い出した。</p>
+
+        <p>塔は静寂の中で立ち尽くしていた。周囲には雨粒の滴り落ちる音だけが響き渡っている。</p>
+
+        <p>リコの視線がゆっくりと上へ向かう。</p>
+        <p>塔の頂点では、ただ闇だけが光っていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-7">
+      <div class="chapter-header">
+        <span class="chapter-number">第7章</span>
+        <h2 class="chapter-title">再録の代償</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_07.png" alt="第7章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨が音階のように塔の内部を奏でる。冷たいコンクリートの壁面に、水滴たちが弾けていく。カセットテープの回転音とタイル床から聞こえる微かな足音だけが響き渡る静寂の中、リコは自分の最初の未完へと向かっていた。</p>
+
+        <p>薄暗い空間を進むにつれ、雨粒に染まるネオン光が仄明るさを作り出す。その光の中で、一人称になりつつある白銀色の髪を持った世界王が佇んでいる。彼女は静けさの中での一瞬だけ、微笑んでみせる。</p>
+
+        <p>「ここだな」</p>
+
+        <p>そう告げると同時に、音楽に包まれた小さな部屋が現れた。それはリコにとって最も鮮明で、かつ最も遠い過去の断片を映し出していた。</p>
+
+        <p>室内には幼い頃の自分と、「旅立つ人」がいる。その光景はまるで録画されたビデオのように再生される。雨粒がガラス窓から滑り落ちる音が、部屋全体に広がっていく。</p>
+
+        <p>「行っていいよ」</p>
+
+        <p>耳を塞ごうとするリコの手に重苦しい沈黙がある。</p>
+
+        <p>「行かないで」と言えばよかったんだと彼女は思う。だが、その瞬間を選びきらなかった。</p>
+
+        <p>再録ボタンは眼前にあるカセットレコーダーから発せられるメロディに乗って脈打っているように見える。リコの指がそれを捉え、静止する。</p>
+
+        <p>涙が零れ落ちる寸前で、彼女の手は止まる。その代償を思い浮かべたからだ。「行かないで」と言えたとしても、「君のために残りたい」それが消えるだろうということに気付いた。</p>
+
+        <p>未完を選んだことへの後悔と共に、リコの心にはそれでも踏みとどまることの大切さが刻まれる。再録ボタンはその存在をじっと見つめている。世界王は微笑むことを止めていない。</p>
+
+        <p>涙、ただ一滴だけ。</p>
+
+        <p>それが光に反射してカセットテープの回転音と一緒に漂っていく。リコは何も言わずに、それを見送る。</p>
+
+        <p>再録ボタンから手を離すと同時に、その場所が消えていったように感じた。空虚な空間に戻ってゆく中で、彼女は世界王に視線を向けるだけだった。</p>
+
+        <p>「この先を選んでくれてありがとう」</p>
+
+
+        <p>微かな光の粒が二人を取り巻きながら静かに浮遊する。</p>
+
+        <p>雨音とタイル床からの足音。カセットテープの回転音。それらがリコの耳を通り過ぎ、遠ざかる鼓動のように響く。</p>
+
+        <p>塔内部は再び真っ暗になり始めた。その中で、彼女は何度も「行かないで」とつぶやいた過去と向き合うことになるだろう。</p>
+
+        <p>だが今、それを押し流すものはただ一つだけだ。それは自分がこれまで通りの道を選んで良かったという確信である。</p>
+
+        <p>世界王との対話が終わりを告げる前に、リコは視線を上げて塔の出口に向かう。その先には新たな未完と選択肢があることを悟りながら。</p>
+
+        <p>雨粒が彼女の髪に触れていくまで、まだ時間が残っている。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-8">
+      <div class="chapter-header">
+        <span class="chapter-number">第8章</span>
+        <h2 class="chapter-title">消さない選択</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_08.png" alt="第8章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が地面に落ちる音。遠くで轟く雷の唸り。ネオン街の光は、今夜も青と赤に染まったアスファルトを照らしている。リコのパーカー袖から顔を出す細い指先が震える。</p>
+
+        <p>「行かないで」と言えなかったあの日以来、彼女は何度もここに戻ってきた。未完はカセットテープの中で音になっていた。「消したい」衝動と、「そのままにしておきたい」という欲求が互いに絡み合う。</p>
+
+        <p>リコの足元では水たまりから微かな泡立った空気が浮かび上がる。排水溝からは雨水が流れ出し、不規則な水流で小さな音を立てていた。</p>
+
+        <p>「彼女には選択肢がある」世界王はそう言って消えていったばかりだ。</p>
+        <p>その言葉がまだ耳に残っている。</p>
+        <p>未完を選ぶこと。それが自分の道だと再確認したリコは深呼吸をする。</p>
+        <p>ネオン色の雨粒が、肩先から流れる黒髪を濡らす。</p>
+
+        <p>今夜もまた塔層へと足を進める彼女のもとに、A.C.O.U.S.Tからの警告音が鳴り始めていた。彼らは未完の大掃除を企んでいたのだ。</p>
+        <p>しかしリコの手元には何も握られていない。</p>
+
+        <p>「消さない」</p>
+        <p>小さな声で口ずさんだ言葉に合わせて、雨粒一つが跳ねる。</p>
+        <p>塔内部の光が急激に明るくなり、カセットテープの回転音が近づいてくる。A.C.O.U.S.Tの代表者とリコはついに対峙する。</p>
+
+        <p>「君は何も変えられないよ」</p>
+        <p>短い銀縁メガネをかける男。</p>
+        <p>手にある装置が赤く点滅し始める。</p>
+        <p>彼にはその言葉に真実があるように思えた瞬間があった。しかし、それ以上に確かなのは自身の胸の中に押し込んでいるカセットテープ。</p>
+
+        <p>「消さない」</p>
+        <p>リコはまた同じ言葉を口にする。</p>
+        <p>水たまりが反射する光の中で、白い王冠の形すら見えそうな気がした。</p>
+        <p>音と光が混ざり合い、視界全体を覆いつくそうとした瞬間、</p>
+
+        <p>「それが正しいんだから」</p>
+
+        <p>世界王の声だけが響いた。それは耳に届きつつも全く触れないような感覚だった。</p>
+
+        <p>雨粒が今夜もう一度彼女を包み込んだとき、その光景は静寂へと収束した。</p>
+        <p>塔の中で起こる出来事が遠くで聞こえる音楽のように感じられた。</p>
+        <p>未完の選択。それ自体が一つの大切な曲調だった。</p>
+
+        <p>リコは雨粒に濡れながら歩き続ける。手元には何も握られていない。</p>
+        <p>だが、その手はこれからもカセットテープを保護するだろう。</p>
+
+        <p>塔の外へと出ていく足音と同時に遠くでまた雷鳴が響いた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-9">
+      <div class="chapter-header">
+        <span class="chapter-number">第9章</span>
+        <h2 class="chapter-title">冠を外す</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_09.png" alt="第9章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が、ターコイズとコーラルのネオン光に輝きながら降り注ぐ。アスファルトから立ち上る湿った匂い。リコは深い息を吐くと、その音さえも吸収して消えるような静寂の中へ歩み進む。</p>
+
+        <p>路地裏では、古いカセットプレイヤーのテープがゆっくり回転し続けている。微かな磁気信号と共に、過去のはじまりがここに刻まれる。</p>
+
+        <p>世界王は塔層の中心で息を吐き出す。透明な灰色の瞳から漏れる光が、周囲の未完と繋がり合う。「全ての人々が自分自身の『冠』を持つべきだ」という思いが彼女の中で揺れ動き始める。</p>
+
+        <p>「しかし」</p>
+
+        <p>雨粒は静かに塔を包み込む。水滴が壁面で弾ける音、遠くから聞こえる風鈴のような残響。その中でも世界王の心臓は微かな鼓動と共に奏でる音楽を作り出していた。</p>
+
+        <p>「自分以外にも」</p>
+
+        <p>雨粒が地面に落ちて広げる水紋のように、彼女の気持ちも次第に拡大していく。「それぞれの人が、自分の未完を受け入れられるようにならなければ」そう考えると、世界王は自分がこれまで抱えてきた重荷から解放されるような感覚を味わった。</p>
+
+        <p>リコが塔層へと足早に入り込んだ。パーカーの袖で濡れた髪を拭う彼女の表情には、決意よりも迷いの方が多かった。「消さない」と心に決めている一方で、「それでもいいのか？」という問いはまだ脳裏から離れていなかった。</p>
+
+        <p>世界王がゆっくりと自らのロングコートの中で小さなブローチを探し出す。白銀の髪が揺れる音と共に、透明な輝きを放つ小規模の冠が手元に現れた。「全ての人々にとっての選択肢」を意味するその王冠は、しかし一人称から複数へと変換するために動き出した。</p>
+
+        <p>彼女はその小さなブローチをリコに向けて差し出す。静寂の中でそれが伝わる一瞬が流れる間も、世界王はただ黙って微笑んでいた。「君の隣に立つことを選べばいい」</p>
+
+        <p>それを受け取ることなく、リコは何度か呼吸をしてから言葉を紡ぎ出した。</p>
+
+        <p>「私はもう一人で大丈夫です。でも...あなたの隣にいることで、もっと力が湧きます」</p>
+
+        <p>世界王はその声を聞いて小さく頷いた。「隣り合えばいい」そう告げてからは、彼女自身も初めて手放した冠の重みから解放されたように感じた。</p>
+
+        <p>雨粒が再び地面で広げる水紋。それぞれに異なる波長を持つ二人の存在が静かに共鳴し始める。「これからは」</p>
+
+        <p>その言葉と共に、世界王とリコの間には新たなる秩序が生まれていた。</p>
+        <p>遠くから聞こえてくる風鈴のような音色、雨粒が反射するネオン光。それぞれが自分自身の未完を受け入れながらも、互いに支え合う選択肢を選び続けた二人の背後では、「これから」が始まることが仄めかされるだけだった。</p>
+
+        <p>水滴から広がる水面。</p>
+        <p>新たな秩序への扉は開かれている。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-10">
+      <div class="chapter-header">
+        <span class="chapter-number">第10章</span>
+        <h2 class="chapter-title">不完全でいい</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_10.png" alt="第10章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が細い線で街路のアスファルトに刻まれる音。ネオン灯から漏れる光が、水玉模様のように路面に広がっている。リコは塔層を出てきたばかりだ。足元を見れば、靴底からはみ出る黒ずんだ雨水が軽く揺らめいている。</p>
+
+        <p>「もう大丈夫」彼女はそう呟きながら、湿った風を頬で受け止める。雨の匂いの中に混ざるのは、街角から吹いてくる花粉や洗剤の香りだ。冷たさが一瞬だけ心地よくて、それ以上に何かが始まる予感がある。</p>
+
+        <p>リコは首元にあるヘッドフォンを耳にかけ直す。カセットテーププレイヤーからは、微かだが確かな音楽の鼓動が聞こえてくる。「ただいま」その言葉とともに、彼女の足取りもまた再開した。</p>
+
+        <p>最初の一歩で地面が震えるような気配。それは静寂の中に小さな火花を散らすようだ。「ここから」と呟くリコは、手探りで道を探しながら進む。雨粒の一つひとつに触れ、それが心地よいと感じる。未完の音が消えていないことを思い出す。</p>
+
+        <p>パーカーの袖を通して顔を覆う。汗と一緒に冷たい雨粒が頬から滴っていく。「これから」その言葉は彼女の唇から漏れるように吐露される。自分の足で歩く、一人じゃないけど、自分が決めた道を選ぶことへの覚悟。</p>
+
+        <p>ネオン灯の間からはみ出る月明かり。遠近法に歪んだ世界の中で、リコだけが音を立てて歩いていく。「行かない」と言えなかった過去を忘れないようにと彼女は歩き続ける。未完でもいい、それでも進むことを決める。</p>
+
+        <p>ヘッドフォンから流れるメロディー。それが自分自身の音楽のように響くとき、心に余韻が残る。街角で見かける通行人や通りすがりの人々もまた、それぞれ自分の道を歩いているように思えた。「大丈夫」と彼女は強く思う。</p>
+
+        <p>雨粒一つ一つがネオン灯と月明かりの間で踊っている。その踊りを見つめながらリコは進む。未完だっていいんだと心の中で繰り返す。これからも、それが自分を動かす力になることを悟る。「行くよ」そう呟いたとき、彼女の足元には新たに水玉が広がっていた。</p>
+
+        <p>青いネオン灯から赤へと色を変えながら、街の光は徐々に柔らかな白さを取り戻していく。遠くで聞こえる自動車のクラクションや人々の会話もまた、雨粒を跳ね返す音と共にリコの歩みを優しく包む。</p>
+
+        <p>パーカーの襟元から覗いたヘッドフォンが小さく揺れて、「行かないで」という過去は静かに風に乗って消えていった。その先にはただ「進まない」ことは選べないと、彼女自身が強く感じていた。「行くよ」と呟いてリコは自分の道を選び続けた。</p>
+
+        <p>雨粒が一つ一つ音楽と共に地面と交差する瞬間。それが繋げて続いていくように歩き続ける足取り。「不完全でいいんだから」その声のように、彼女の心にまた新たな旅が始まる。「これから」という言葉と共にリコは街の一部になりつつある。</p>
+
+        <p>夜が深まり始める雨の街。ネオン灯と月明かりの中を通り抜ける音楽。それは一人の人間の歩みと共に鳴り響き、その先には「未完」を受け入れてなお進む者の姿があった。「行くよ」という呟きは誰にも聞こえないが、雨粒一つ一つに伝わっていくように思えた。</p>
+
+        <p>街角で灯る一筋の光。それがリコの足取りを照らすとき、「これから」と言う言葉とともに彼女の心の中には新たな旅が始まった。「不完全でもいいんだから」その声はただ静かに、しかし強く響いていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-11">
+      <div class="chapter-header">
+        <span class="chapter-number">第11章</span>
+        <h2 class="chapter-title">止まらない再生</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_11.png" alt="第11章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が床と壁を滑る音。夜の都市の静けさに、リコの足音だけが響き渡る。彼女は再び街に出たばかりで、まだその光景に戸惑いを感じていた。ヘッドフォンからは好きな曲が流れている。しかし耳には他の音も聞こえる。</p>
+
+        <p>「行くよ」</p>
+
+        <p>呟いた言葉が空気を切り裂くように静寂の中に漂う。リコはゆっくりと歩み続けた。だが街の外に出ても、残響層から見える未完の光景が増え続ける。その数は彼女の視界を埋め尽くす。</p>
+
+        <p>カセットプレイヤーが勝手に回り始めると同時に、周囲には無数のノイズフィードが溢れ出した。過去と未来が混じった歪んだ音楽、人の声や笑い声、悲しみのため息。全てがリコを取り巻き、彼女の心を揺さぶる。</p>
+
+        <p>「止まらない」</p>
+
+        <p>プレイヤーから漏れる微かな回転音は雨粒と共に部屋中に広がり、その力強さに耳を塞ごうとする。しかし触れようともしない手のひらには何も伝わらず、代わりに心地良い静寂だけが残る。</p>
+
+        <p>リコは身じろぎもせずに立ち尽くす。視界いっぱいになるのは他人の未完ばかりだった。どれも鮮明な思い出と同様に現れるが、それぞれ異なる誰かにとって大切な瞬間を表していた。「これが全部？」と問いかけるような表情で周囲を見回し、彼女は自身の疑問にも答えようとはしない。</p>
+
+        <p>街角から漏れてくる水音。遠くでは雨粒が風に乗って通りに降り注いでいた。その中には未完が溶け込んでいて、リコにとってはただの雨ではなく別なものとして認識される。「誰か」と「何か」を区別することすら難しくなるような感覚。</p>
+
+        <p>路地裏から漂う湿った土の匂い。そして不意に聞こえるのは他人の声だった。それはどこまでも遠く、かつ近くにあるもののように感じられる。「助けて」「帰るよ」「もう大丈夫」といった言葉が風に乗ってリコを包む。</p>
+
+        <p>「僕は」</p>
+
+        <p>再びカセットプレイヤーから流れてくる声に耳を澄ますと、それはただ一人の男からのメッセージだった。彼女の心の中に響くその声には哀しみと希望が混ざり合っていた。「君も同じだから」という言葉と共に微かな笑みさえ浮かべる。</p>
+
+        <p>リコは再び歩き出す。雨粒に濡れたアスファルトの感触、ヘッドフォンから聞こえる音楽、そして心地良い静寂が彼女を包む。「行かないで」</p>
+
+        <p>その呟きは自分のものでも他人のものともつかない。</p>
+
+        <p>「行くよ」</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-12">
+      <div class="chapter-header">
+        <span class="chapter-number">第12章</span>
+        <h2 class="chapter-title">言えなかった言葉</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_12.png" alt="第12章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が病院の窓ガラスに滑る。内と外、二つの世界の境界線が細かく揺れ動いている。薄暗い室内には静寂がただよっている。酸素ボンベの小さな音だけが空間を満たしている。</p>
+
+        <p>リコは手元にあるカセットプレイヤーから流れるノイズフィードに耳を傾ける。それは、この部屋で息絶えた女性との最後の会話だった。「君を愛してる」と伝えることができなかった言葉。それを今も残響として感じている母親がいる。</p>
+
+        <p>彼女はまだ亡くなって間もない。酸素マスクから浮かび上がる白い呼吸音と連動して、リコの心臓が鼓動しているのが聞こえるようだ。</p>
+        <p>空気が冷たく湿り気を帯びている。雨粒が窓ガラスに重なるたびに小さな水滴となって落下する。室内は灰がかかったように静まり返っている。</p>
+
+        <p>「愛してる」</p>
+        <p>リコの口から、つぶやきのように声が出る。</p>
+        <p>それが言えなかった母親への想いを表しているかのような錯覚を感じてしまう。</p>
+
+        <p>窓枠の横で雨音が積み重なりつつも微かな旋律を作り出す。その響きはリコの心の中に広がっていく。亡くなった女性が息子に対して抱いた切なさと虚しさ。</p>
+        <p>「愛してる」</p>
+        <p>また同じ言葉が出る。</p>
+
+        <p>部屋の隅にある花瓶に水滴を受ける花びんを見つめながら、彼女は何度も同じフレーズを繰り返す。「君を愛してる」という想い。それが未完として残っている母親がいる。</p>
+        <p>リコは目を伏せたまま、カセットプレイヤーのボタンに指を近づけつつも一度遠ざける。</p>
+
+        <p>「再録」</p>
+        <p>彼女の心の中で声が出る。</p>
+        <p>しかし、それは誰か他の人の選択でもあるのだ。それを自分の意志だけで覆してしまうことへの違和感が胸の中に広がっていく。</p>
+
+        <p>病室の壁紙から滲み出るように聞こえてくる雨粒の音と呼吸器からの細かな滴り音は彼女の心を揺さぶる。</p>
+        <p>「愛してる」</p>
+        <p>再び声が出てしまう。誰か他の人の言葉なのに、それが自分の口を通じて出ていく。</p>
+
+        <p>冷たい感触が手の中にあるカセットプレイヤーから伝わってくる。その上に軽く指先が触れると微かな電子音とともにボタンの凹みを感じる。</p>
+        <p>「代償」</p>
+        <p>彼女の心の中で声が出た。「愛してる」と言えなかった母親を、リコは助けられるのか。</p>
+
+        <p>雨粒の滴り落ちる音が病室の中に響き渡っている。その静寂に包まれながら、カセットプレイヤーから流れるノイズフィードと自分の感情との間で迷う。</p>
+        <p>「消す」</p>
+        <p>彼女の口から出た小さな言葉は心の中で広がっていく。</p>
+
+        <p>しかし、それが誰かの選択であり、それはリコだけでは決めるべきではない。その代償もまた自分自身を傷つけることになるような気がするのである。</p>
+        <p>「愛してる」</p>
+        <p>再び声が出る。</p>
+        <p>そして、カセットプレイヤーから流れるノイズフィードが遠ざかっていくのを感じると同時に、彼女の心の中では言葉と感情との間で迷走が始まる。</p>
+
+        <p>病室の窓ガラスに雨粒が重なり合う音だけが聞こえる。その静けさはリコを包み込むように広がる。</p>
+        <p>「愛してる」</p>
+        <p>最後にもう一度、彼女の口から出た言葉だった。</p>
+        <p>そしてカセットプレイヤーのボタンからは何も起こらず。</p>
+
+        <p>冷たい雨粒に濡れた窓ガラスの向こうには、青白く揺らめく街並みが広がっている。その光景を眺めるリコは手の中にあるカセットプレイヤーを見つめたまま、ただ静かに立ち尽くす。</p>
+        <p>病室全体から伝わってくる湿った匂いと雨粒の滴り落ちる音だけが聞こえる。</p>
+
+        <p>「愛してる」</p>
+        <p>最後にもう一度、彼女の口先から零れた言葉は夜空へ消えていくように感じられた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-13">
+      <div class="chapter-header">
+        <span class="chapter-number">第13章</span>
+        <h2 class="chapter-title">見えない階段</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_13.png" alt="第13章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨音が絶え間なく都市の街角に降り注ぐ夜。ネオンサインの光が、アスファルトを濡らした水たまりで揺れ動き、その中で一つの影が消えていくようだった。冷たく湿った空気が肌を撫でおろし、リコは自分の心臓に手を当てて呼吸を探る。</p>
+
+        <p>カセットプレイヤーを取り出し、小さなヘッドフォンを耳につける。</p>
+        <p>「君を愛してる」という声が再生されるたび、彼女の瞳には遠くの雨粒が揺らぐ湖面のように微かな映像が映り込んでくる。ただ見つめていると、その光景は次第に色褪せていく。</p>
+
+        <p>リコは深呼吸をして歩き出す。</p>
+        <p>足元を見れば、透明なステップのようなものがアスファルトの上を浮かんでいた。「ここから」と確信して、一つ二つの梯子を蹴って登る。雨粒が頬を滑り落ちていく感覚と同時に一瞬の映像が頭の中に広がった。</p>
+
+        <p>「さよならなんて言わなくていいのに…」</p>
+        <p>その声は誰か知らない女のものだった。</p>
+        <p>目の前に浮かび上がるのは、駅前のベンチに座る老人。黒いコートを羽織り、手元の古い携帯電話を見つめる男がいた。</p>
+
+        <p>次の一歩で別の映像が現れる。</p>
+        <p>「君の笑顔が見たい」</p>
+        <p>ここでは、部屋の中で一人泣き叫ぶ少年と、彼に寄り添って何か語ろうとする少女がいる。二人ともリコには誰だかわからない。</p>
+
+        <p>透明なステップは途切れることなく続いていた。</p>
+        <p>次々に足を踏み出す度に新たな映像が現れ、その瞬間の感情が心の中で震えるように揺らぐ。</p>
+        <p>「ここじゃない」</p>
+        <p>「君のことを好きになった。ただそれだけ」</p>
+        <p>それぞれ異なる時間と空間から届く想いは、リコの中にある未完の記憶を強く突き動かした。</p>
+
+        <p>足元では一人の人間の人生が次々に終わりを迎えているように思えた。</p>
+        <p>でもそれは違う。彼女たちはここにはいない。ただ、この「見えない階段」を通じてその人々の感情が自分たちの声として聞こえてくるのだ。</p>
+        <p>リコは深く息を吸い込んで再び一歩踏み出す。</p>
+
+        <p>透明なステップと共に登る高さが増すにつれ、雨粒も次第に軽やかになった。それは彼女自身の心の中から湧き上がる静寂と溶け合っていく。</p>
+        <p>「君は…」</p>
+        <p>その声を聞いてリコは振り返った。しかし誰もいない。ただ風だけで、遠くで何かが歌っているようだった。</p>
+
+        <p>視界が開けていく。</p>
+        <p>上を見ればネオンサインの光があたり一面に広がり、雨粒がそれを反射して宙を舞っていた。その中を一人静かに歩み進むリコは、まるで夜空を彩る星屑のように浮遊している。</p>
+
+        <p>「君も…」</p>
+        <p>再び足元から新たな声。</p>
+        <p>それは少年のものだった。「お父さんと一緒に泳ぎたかったんだ」という言葉が風に乗って聞こえてくる。その真実性にリコは身震いした。誰か他の人間の中にある、未完を自分が踏んでいる。</p>
+
+        <p>「ここで」</p>
+        <p>そう呟いてから彼女はまた一歩前に進む。</p>
+        <p>見えないステップの上では、次々と誰かの願いや夢が現れて消えていく。</p>
+        <p>雨粒があたためられたアスファルトに触れるとすぐに蒸発し、その場所で新たな人生が始まる。</p>
+
+        <p>リコは深呼吸をして足元を見つめる。</p>
+        <p>それは静寂の中にありながら同時に大音響を奏でる。透明なステップが次々と現れ、彼女の体感時間とは異なる速度で移動する人々の記憶が重なり合う。</p>
+        <p>「君ならきっと…」</p>
+        <p>その声は誰か知らない女性だった。</p>
+
+        <p>段階ごとに誰か別の人が映し出されていく。</p>
+        <p>リコの足元では一つひとつの未完が次々と現れて消えていった。だが、それはただ静寂を強調するだけではなく、人々それぞれが抱える想いの重さを感じさせるものでもあった。</p>
+
+        <p>「君は…」</p>
+        <p>再び誰か知らない少年の声。</p>
+        <p>その名前すら知らずにリコはある瞬間を踏んだ。そこでは一人の人間が自分の人生と向き合い続けていた。それが彼女の足元で一瞬だけ形を変え、消え去った。</p>
+
+        <p>透明なステップはいつまでも続いているようだった。</p>
+        <p>だが彼女にはもうそれを見つめることはなかった。「ここだ」という確信と共にリコの瞳に浮かんだのは新たな光景。</p>
+
+        <p>雨粒が風に乗って静寂を紡ぎ出す夜。ネオンサインの淡い光芒がアスファルトを照らし、その中で一人の人間だけが見えない階段を登り続けていた。</p>
+        <p>透明なステップは彼女の足元から消えつつあった。</p>
+
+        <p>リコは大きく深呼吸をして、最後の一歩を踏み出した。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-14">
+      <div class="chapter-header">
+        <span class="chapter-number">第14章</span>
+        <h2 class="chapter-title">上書きの誘惑 II</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_14.png" alt="第14章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が細かな音の結晶となって街路に降り注ぐ。ネオンサインから漏れる光が、アスファルト上で揺らめきながら遠ざかる人波を照らす。リコは階段を上る度に振り返って周囲を見回した。その視線の端で、白いスーツと黒髪の女性が立っていた。</p>
+
+        <p>「全部上書きしてあげる」と彼女は言った。「楽になるわ」。</p>
+        <p>微かだが確かな音とともに、リコの心臓が跳ねた。</p>
+
+        <p>雨粒を一滴も弾くことなく濡れる服。冷たい風に顔を撫でられる感触。その中でも耳元近くから繰り返される囁き。静寂すらも音として聴こえるほど、それはリコの心地悪さと同調する。</p>
+
+        <p>「全部上書きしてあげる」</p>
+        <p>彼女は微笑んだが、その笑顔には温もりはないようだった。「楽になるわ」</p>
+
+        <p>雨粒を弾くように反射した光。カセットプレイヤーから洩れる音の断片。リコの胸中で渦巻き始める未完と葛藤。彼女はただ黙って、その視線の中で指先が震えるのを感じていた。</p>
+
+        <p>「全部上書きしてあげる」</p>
+        <p>再び囁かれた言葉に触れるように、カセットプレイヤーから手を離す。「楽になるわ」</p>
+
+        <p>その時だった。</p>
+        <p>リコは自分の左手を見つめた。それまで握り締めていた空っぽの掌が開く。</p>
+
+        <p>「全部上書きしてあげる」</p>
+        <p>彼女の声とともに、心の中でも触れたかのように、カセットテープのボタンに伸ばす右手を掴んだ。</p>
+
+        <p>冷たい雨粒と並行し、静かな力。それを握った手は揺らがない。</p>
+        <p>「楽になるわ」と囁かれても、リコは自分を見つめ続けた。「全部上書きしてあげる」彼女が微笑む。</p>
+        <p>その背中で反射するネオンの色。光を纏う黒いスーツ。</p>
+
+        <p>リコはゆっくりと右手を開いた。掌に浮かぶカセットテープのボタンから、震える指先を取り除く。再び握ったそれはただパーカーのポケットへと戻されるだけだった。</p>
+        <p>「楽になるわ」と囁きながら背を向けたA.C.O.U.S.Tのエージェント。「全部上書きしてあげる」</p>
+        <p>雨粒が彼女を包み込む中、その姿は遠ざかる。</p>
+
+        <p>ネオンサインから漏れる音。路地の隅で鳴り響く排水溝の水滴。</p>
+        <p>すべてが静寂に溶け込みつつも、耳元だけ残す囁きと対立する光景を眺めながら、リコは何度もうなずいた。</p>
+
+        <p>雨粒は彼女の中で音となって揺らめいている。そして、その中で未完の想いと共に歩み続ける足取りが決して止まらない。</p>
+        <p>「楽になるわ」と囁く声と同時に、再び前を向いて進む足下から反射するネオン光。</p>
+
+        <p>何も変わらずに静寂は続いたのである。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-15">
+      <div class="chapter-header">
+        <span class="chapter-number">第15章</span>
+        <h2 class="chapter-title">消えた理由</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_15.png" alt="第15章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が街のアスファルトに叩きつけられる音。水たまりから立ち上る白い霧。リコは傘もささずに歩いている。冷たい風と溶け合うように、彼女の体一つで世界全体を覆う。</p>
+
+        <p>狭い路地裏にある小さな家。扉の隙間からは家族が団欒する暖かな光洩れ出している。その窓ガラスには白銀色に輝く水玉模様。外から見るとまるで絵画のような情景。しかし、リコはそこに居るべきではないと知っていた。</p>
+
+        <p>「全部上書きしてあげる」と囁かれた夜の余韻がまだ肌を冷やす。</p>
+        <p>その言葉が消え去った後も、残響層では未完たちが静かな嗚咽を繰り返している。それらは無数の音符のように浮遊し、現実と重なり合っている。</p>
+
+        <p>男の声。「家族を守る」という決意。それがこの街に消えていった。</p>
+        <p>そして今、リコはある男性を見かけた。彼が家族と一緒にいる光景だ。</p>
+        <p>だが、その姿にはどこか違和感があった。表情は無機質で、目の中から感情すらも抜け落ちている。</p>
+
+        <p>「何を？」</p>
+        <p>男の妻の問いに、返事はない。ただ空虚な視線だけが漂う。</p>
+        <p>子どもたち。「パパ」、「ママ」と呼びかける声。笑顔と抱擁を求めても、彼は微動だにしない。</p>
+        <p>家族の手から何か大切なものが抜けていったように感じる。</p>
+
+        <p>「何があったんですか？」</p>
+
+        <p>不意にその男を肩越しに見つめるリコ。目が合いそうになる瞬間も、ただ視線を通すだけだった。雨粒が窓ガラスを打つ音。</p>
+        <p>この街のどこにも居場所がないような気分。</p>
+
+        <p>「パパ、大丈夫？」</p>
+
+        <p>小さな女の子の声。母親の問いかけに、彼は答えない。</p>
+        <p>不必要なものかのように扱われる家電製品のような表情だった。</p>
+        <p>リコは息を止めてその光景を見つめ続ける。雨粒が風に乗って流れ落ちる様子。</p>
+
+        <p>「パパー！泣くぞ！」</p>
+        <p>男児の声もまた虚しく響き、返事がない。</p>
+        <p>家族と繋がりたい願いが消え失せた瞬間を、リコは初めて他者の目を通して見てしまった。それはまるで心臓から血を抜いたような喪失感だった。</p>
+
+        <p>雨粒が地面にぶつかり音楽のような旋律を作る。「何があったの？」</p>
+        <p>その問いには答えはない。</p>
+        <p>ただ無数の雨水と共に息づく街だけが、この男との関わりを見守っているかのように。リコは震える手でポケットを探る。カセットテープ。それは彼女の選択を形にしている。</p>
+
+        <p>風が通り過ぎ、雨粒と肌の間に隙間を作る。</p>
+        <p>消えた理由。それが家族全員の表情からも垣間見えるようだった。</p>
+        <p>窓ガラス越しに光を見つめながら、リコは自分の手で握りしめたカセットテープを感じる。「何を上書きすべきか」</p>
+        <p>それは彼女が向き合わなければならない問いでもあった。</p>
+
+        <p>雨粒が地面に落ちる音。静寂と混ざり合うように。</p>
+        <p>「全部上書きしてあげる」と囁いた声が遠くへ流れるように消えていく。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-16">
+      <div class="chapter-header">
+        <span class="chapter-number">第16章</span>
+        <h2 class="chapter-title">残響の市場</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_16.png" alt="第16章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が細い線で交差する市場の入り口。ネオンの光が冷たさと暖かさの間を行き来し、濡れたアスファルトに歪んだ影を作り出す。足元にはカセットテープの箱やビニール袋があふれ返る。音漏れした曲が市場中に流れる。</p>
+
+        <p>リコは肩まである黒い髪を手で払い、傘を開く。その瞬間、古いテープレコーダーから漏れたメロディが彼女の耳に届いた。</p>
+        <p>「ここか…」</p>
+        <p>首のヘッドフォンが微動だにしない。</p>
+
+        <p>市場の中は薄暗さと音響で満ちている。壁際には無数のカセットテープが並べられ、その中から人々の声や笑い、涙などが漏れ出している。</p>
+        <p>「君も何か探してるのか？」</p>
+        <p>横を通り過ぎた男が問いかける。顔色は青白く、目つきは虚ろだ。</p>
+
+        <p>リコは何一つ答えず、手に持ったカセットテープを選ぶ。「これかな…」とつぶやきながら、一冊の箱を開いた。</p>
+        <p>「君の涙が録れてるのか？」</p>
+        <p>その問いには答えない。彼女自身も知らない誰かの声が聞こえてくるだけ。</p>
+
+        <p>「売るのはあんまり好きじゃない」と男は遠ざかる。「買うのも…」</p>
+
+        <p>リコは、カセットテープに目を落とす。</p>
+        <p>「君が何を求めたのか、知りたい」</p>
+        <p>市場では商いする者もいれば、ただ眺めている人もいる。しかし誰一人として笑顔を見せる者はいない。</p>
+
+        <p>雨粒の音だけが聞こえる中、「世界王」という名前の噂話が始まる。「彼は分裂し始めてる」などという言葉。</p>
+        <p>「何？」</p>
+        <p>リコは声を漏らす。</p>
+
+        <p>市場全体が一瞬静寂に包まれ、誰も喋らない。しかし雨粒の音とカセットテープからの微かなノイズだけが絶え間なく響き渡り続ける。</p>
+
+        <p>その先に広がる塔層への道を見つめながらリコは歩みを進める。</p>
+        <p>「次行くのは…」</p>
+        <p>彼女は何者か知らない誰かの涙声と、雨粒の音だけを聴いていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-17">
+      <div class="chapter-header">
+        <span class="chapter-number">第17章</span>
+        <h2 class="chapter-title">王を名乗る者</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_17.png" alt="第17章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が路上のネオン光を弾き散らす音。湿ったアスファルトと金属製カセットテープケースの冷たさを感じる。リコはパーカーの袖で目元を拭く。</p>
+
+        <p>「ここだ。」</p>
+
+        <p>市場の中から聞こえる、微かに歪んだメロディ。古いレコーダーが漏らす音楽は懐かしさと孤独感を混ぜ合わせたようなものだった。</p>
+        <p>人々は通行人同士であえぐように話しあい、雨粒の弾みで肩についた水滴を指ですくう。</p>
+
+        <p>「世界王とは？」</p>
+        <p>「それは？」</p>
+
+        <p>市場の一画。不意に聞こえる声がリコの注意を引く。「自分こそ世界王だ」と豪語する男が立ち尽くしていた。</p>
+        <p>短い黒髪、細身で統一された黒スーツと銀イヤーピース。その手にはノイズ測定器のような装置。</p>
+
+        <p>「未完は全て俺に集まるんだよ」</p>
+        <p>自信満々の表情ながら、彼の言葉を誰も信じそうもない。</p>
+        <p>リコは何故か胸騒ぎがする。ただ雨粒だけが反響音として残る。</p>
+        <p>男の横で小さなカセットテープボックスが揺れる。</p>
+
+        <p>「君たちみたいに遠回りをする必要ないよ」</p>
+
+        <p>人々から視線を集め、彼は自信たっぷりと続ける。「俺なら簡単に未完を解決するさ」</p>
+        <p>手元にある装置。それを握る力が強まる。</p>
+        <p>リコの鼓膜にもその音響が伝わってくる。</p>
+
+        <p>「だけど君たちには分かんないだろうな？」</p>
+
+        <p>男の声色に微かな震えを感じた瞬間、パニックが始まった。</p>
+        <p>人々は彼から逃げ出すように広がり始めた。カセットテープケースを握ったまま。</p>
+        <p>リコもまた足元を見つめながら、その光景を眺めていた。</p>
+
+        <p>「待ってください！」</p>
+
+        <p>声の主に振り返る男。「何だ君？ なにか未完があるのか？」</p>
+        <p>手にある装置が震える。それが彼の内心を表しているようだった。</p>
+        <p>リコは黙り込んだまま歩み寄った。「そんなこと、していいんですか?」</p>
+        <p>しかし彼女の問いかけも虚しく響くだけ。</p>
+
+        <p>「君には理解不能だろうが」</p>
+
+        <p>男は冷笑するように目を見つけると、装置に向かい手を伸ばす。</p>
+        <p>カセットテープの山へ置き、力を込めて握りしめる。その動きに視線集まる。</p>
+        <p>リコの心臓も急加速した。</p>
+
+        <p>「君たちには分からんよ」</p>
+
+        <p>男は叫びながらカセットボックスを押しつぶす。</p>
+        <p>ケースが粉々に砕け散る音と、それは同時に破片となって風に乗って消えてしまう。リコの視界の端で見えた光景だった。</p>
+
+        <p>市場は一瞬静寂に包まれた後、人々が叫び声を上げて逃げ出す。</p>
+        <p>雨粒が反射して虚無のような白い点を作り出した。</p>
+
+        <p>「待って！」</p>
+
+        <p>手足から力が抜けるような感覚。リコの鼓膜にはただその音だけ響いていた。「待ってください」という彼女の小さな絶叫。</p>
+        <p>しかし男はすでに市場を去っていた。</p>
+
+
+
+        <p>空に広がる雨粒たち、それら一つ一つが反射する無数の光と闇。</p>
+
+        <p>「世界王とは？」</p>
+        <p>問いかける声。リコ自身から漏れるような問いだった。</p>
+        <p>その答えを探し続ける彼女の足取りが止まらないように見える。</p>
+
+        <p>市場一帯を覆う静寂は虚ろなほど深く、雨粒一つ一つにも響きの余韻だけが残るのみだ。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-18">
+      <div class="chapter-header">
+        <span class="chapter-number">第18章</span>
+        <h2 class="chapter-title">再録の代償 II</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_18.png" alt="第18章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が地面から立ち上る蒸気と混ざり合う、夜の街。ネオンの光が重なり合って複雑な影を作り出す。リコは走った。古いカセットプレイヤーを握りしめ、その音色が途切れるのを防ぐように。</p>
+
+        <p>「止めてあげるから」</p>
+
+        <p>彼女の声に反応する者はいなかった。通りの向こうで鼓動のような音が鳴っていた。「世界王」と自称した男は塔へと続く螺旋階段に向かって登り続けている。</p>
+
+        <p>カセットテープの巻き戸ねじり音、それが再び聞こえるようになった瞬間から、街全体に緊張感が走る。雨粒はより強く地面を打つようになり、夜空には静かな怒りのようなものが流れ始めたかのように感じられた。</p>
+
+        <p>「待ってください」</p>
+
+        <p>リコの声もまた無視され続けた。その度胸はない彼女自身にも驚くべきものだった。ただ一つ、足が止まらなかったのは、彼女の内側で何か新しい力が芽生え始めていたからだ。それは怯えと恐怖を伴う不安定な力ではあった。</p>
+
+        <p>「消えるのか？」</p>
+
+        <p>螺旋階段の上の方から低い声が聞こえた。その音は空気と共に塔へ吸い込まれていくかのように、ゆっくりとした速度で降りてきた。「A.C.O.U.S.T」の代表者だったはずだ。彼の黒いスーツと銀色のイヤーピースがあまりにも鮮明に思い出される。</p>
+
+        <p>「再録」</p>
+
+        <p>男は一歩踏み出したその場所を振り返った。しかし、見回した先にはただ闇だけがあった。「消えるって言うのは何が？」</p>
+
+        <p>リコもまた塔へと駆け上がっていく人々の群れに混じりながら問い続けた。</p>
+
+        <p>「世界のためならいいんだよな？」</p>
+
+        <p>男はふらつきながら、階段を一歩ずつ上った。その度に体全体から力が抜けていくのが分かるようだった。「消える代償」について彼は何も答えなかった。しかしリコにはそれが伝わっていた。それは全ての人々の声、表情、動きの中でも感じられた。</p>
+
+        <p>「消えてはならないものが」</p>
+
+        <p>塔は揺れ始めている。その振動が地面から床に渡り、人々を包み込むかのように広がっていく。「再録」が進むにつれて音と光が逆流し始める。それは未完の願いが形となり現実層へ還る瞬間だった。</p>
+
+        <p>「消えてはならないものが」</p>
+
+        <p>リコもまたその言葉と共に塔を駆け上り始めた。彼女の中で、何か確固たるものを見つけているようだった。「世界王」を見つけて話さなければならないという強い意志と、それがどれだけ危険であるかを理解しながらでもなお進む勇気が溢れていた。</p>
+
+        <p>「消えてはならないものが」</p>
+
+        <p>塔の高層へ続く道では光が逆流し始めており、その粒々があたかも星屑のような輝きを持ってリコの足元に落ちていく。それは未完の形となり現実に戻ろうとしているのか？それともただ彼女の想像なのか？</p>
+
+        <p>「消えてはならないものが」</p>
+
+        <p>塔の中で聞こえる音と光が次第に強くなり、その振動により体全体を包み込んでいく。「再録」による震えが全人類へ影響を与えている。それはリコもまた例外ではなかった。</p>
+
+        <p>リコの足元から光り輝く粒々があふれ出し始めた。それらは一つの形となり現実層に戻ろうとしていた。それが何か、あるいは何を表しているのか、それはまだ分かっていなかったが、ただその中で彼女が必要と感じているものが存在するとだけ理解していた。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>塔の中で聞こえる音は次第に高鳴り始め、リコの鼓膜まで響き渡る。「再録」による逆流が始まった。それは未完が現実へ戻ろうとする強烈な衝撃だった。</p>
+
+        <p>光と音が混じり合い、彼女の内側で一つの形を成そうとしていた。それが何なのかはまだ分からなかったが、ただその中には世界がこれまで存在した理由があったように思えた。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」が進行するにつれて彼女の鼓膜を震わせる音量と共に、光粒の逆流が強まっていた。それは未完の願いたちが現実に戻ろうとする瞬間だった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコもまたその言葉を声に出しながら塔へと駆け上った。「再録」による震えの中でも彼女の足元から一つの形が光り輝きながら現れていた。それは未完とは異なる何か、世界にとって重要な意味を持つものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」によって逆流し始めた光粒たちが足元で一つの形を作ろうとしていた。それは未完ではなく、ただ世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」の進行と共に彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが芽生え始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼女の内側でも何かが変化し始めていた。それは怯える心とは異なる強さ、そして世界を守るために必要なものだった。</p>
+
+        <p>「消えてはならないものを」</p>
+
+        <p>リコは何度も何度も繰り返しながら塔へと駆け上った。「再録」による逆流の中で彼</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-19">
+      <div class="chapter-header">
+        <span class="chapter-number">第19章</span>
+        <h2 class="chapter-title">反転する夜</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_19.png" alt="第19章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨が止んだ夜、アスファルトの街並みは静寂に包まれていた。冷たい風と乾いた空気が肌を撫でる。ネオンの灯りも薄暗さの中では微かになるだけだった。リコは塔へ向かった。</p>
+
+        <p>彼女の手にはカセットプレイヤーが握られ、ヘッドフォンが首からはためいている。耳から遠くまで聞こえる音はないのに、それでも彼女はずっとそれを繋いだままにする。</p>
+
+        <p>塔の上層部にたどり着き、リコは薄明かりの中を進む。霧のような雨粒がまだ残っているように感じられる空間で、そこには誰か一人が静かに佇んでいた。長い白銀の髪と淡い灰色の瞳を持つ存在。</p>
+
+        <p>「あなたは世界王……」</p>
+
+        <p>「そうですね」</p>
+        <p>声の響きはわずかな波紋を広げるだけだった。</p>
+        <p>その傍らに立つリコ、世界王を見上げる。力強さもなければ脆くもない表情。ただ静かで、また寂しげである。</p>
+
+        <p>「偽りの存在が増殖していますね」</p>
+        <p>雨粒が反響する音を聞きながら、彼女はゆっくりと口を開いた。</p>
+        <p>地面から微かな光が始まり、それは広い空間へと延びる道のように見えた。夜空では星々が揺らぐように浮かんでいる。</p>
+
+        <p>「あなたも弱っていますね」</p>
+        <p>世界王の肩元で白く染まった雲が流れ、その向こうには真っ暗な闇がある。</p>
+        <p>風が通り抜けるとき、彼女の髪をそよぐ音だけ。静けさは絶対的なものだった。</p>
+
+        <p>リコは黙って頷いた。「でも、未完は消させない」</p>
+        <p>世界王の声に重ねて、その言葉もただ虚ろな空気の中で溶けていく。</p>
+        <p>雨粒が地面から立ち上る光りを吸収し、再び音として広がっていく。</p>
+
+        <p>「それが私の役割です。しかし……あなたは？」</p>
+        <p>尋ねてくる彼女の目元には静かな決意があった。</p>
+        <p>手にしたカセットプレイヤーの端末を見つめながら、リコは口を開いた。「私は消えるものを守る」</p>
+        <p>雨粒一つ一つが光と音を結びつけ、地面からはぼんやりとした明かりがあふれ出す。</p>
+
+        <p>星々が次第に反転し始めると同時に、地響きのような微かな震えが始まった。空は静かだが不気味なほど澄んでおり、その下で大地からの光りと夜の間をつなぐ雨粒たち。</p>
+
+        <p>「消えるもの……それは何ですか？」</p>
+        <p>世界王が静かに尋ねてくる。</p>
+        <p>夜の反転と共に広がる明かりの中で、リコはゆっくりと頷いた。「心から大切なもの」</p>
+        <p>その答えとともに彼女の表情もまた晴れていく。雨粒たちの中にも光りが揺らぐように生まれ始める。</p>
+
+        <p>地面からはぼんやりとした星々が浮かび上がり始めている。</p>
+        <p>空には逆さまの星座、それから落ちる星空。ネオン灯を吸収し始めた夜闇はどこまでも深く広がっていく。</p>
+
+        <p>「消えていくもの……その背後にある未完を誰も取り除かないで」</p>
+        <p>世界王の声に混ざって再び雨粒たちが光り、音として空へと飛んでいった。</p>
+        <p>リコは静かにそれを眺め続けた。彼女の中でも何かが始まったように感じられた。</p>
+
+        <p>夜の反転と共に広がる不思議な情景を背景にして、二人の間には薄明かりの中で少しずつ光り始めた希望があったような気がした。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-20">
+      <div class="chapter-header">
+        <span class="chapter-number">第20章</span>
+        <h2 class="chapter-title">触れてはいけない音</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_20.png" alt="第20章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が街の音楽を静かに鎮め、ただしどこからともなく漂う湿った匂いだけがあらゆる気配を告げる。アスファルトは黒ずんだ煤色で、ネオン灯りも薄暗く僅かな光しか放たない。塔の内部では、その外の夜とは異なり、静寂が絶対的だった。</p>
+
+        <p>「ここに来ると、いつも雨が止むわね」</p>
+
+        <p>リコは立ち去る世界王を見送った後で、再びこの場所へ戻ってくるとそう言った。彼女たち二人きりである塔の一番深い階では、空調も扇風機もないため、静寂と湿度だけが相まって独特な冷たさを放っていた。</p>
+
+        <p>「それがどうした？」</p>
+
+        <p>世界王は薄ら笑いながら答えたが、その目には驚くほど長い歳月が宿っているようだった。リコの視線の先では、彼女の言葉通りに雨粒も音もなく消え失せていた。</p>
+
+        <p>「この階にあるものは、特別な何かだよ」</p>
+
+        <p>世界王はそう告げると、リコを案内して薄暗い部屋へと連れて行った。そこには一つだけ、台座の上に乗った円柱形の箱があった。雨が止んだ静寂の中でもその箱から放たれる微弱な電磁波音が聞こえてくる。</p>
+
+        <p>「これは」</p>
+
+        <p>リコは思わず手を伸ばそうとしたが、世界王の一言でそれを止めさせられた。「ゼロテープ」——それは最後の力で名付けられた特別なものだった。それとは別に、箱には小さな青い灯りが点滅しており、それが彼女の心臓のように規則的に脈打っていた。</p>
+
+        <p>「このテープは最初から存在した」と世界王は続けた。「最初の人間たちが未完を持ったその瞬間に同時に生まれた」</p>
+
+        <p>リコの瞳は静寂の中で大きく開け放されながら、あの日の雨を思い出していた。彼女にはまだ完全なものは求められていないと、誰かに伝えたいと思っていた。</p>
+
+        <p>「ゼロテープは特別なものだ。触れれば世界が止まるかもしれない。それはあなたにとっても危険だ」</p>
+
+        <p>リコの手はその箱から10センチ以上離れた位置で停止していた。雨粒を吸い込んだ空気は重く、冷たかった。彼女自身の中でも複雑な感情や思考が渦巻いていた。</p>
+
+        <p>「触れないか？それとも？」と世界王の声が静寂の中に響き渡る。「リコ」</p>
+
+        <p>彼女の指先は5センチの距離を止めたままだった。その小さな隙間から見えるテープの輝きは、雨粒も遮断し切れないほどの光りものだ。</p>
+
+        <p>「この箱に触れれば世界は変わってしまうよ」と再び世界王が告げた。「あなた自身も変わる」</p>
+
+        <p>リコには答えず、ただ静かにゼロテープを眺め続けている。彼女の中では何か決定的なものが動き出していたような気がしたのだが、同時にそれは自分の中でまだ確定していないと感じてもいた。</p>
+
+        <p>「触れるか？それとも？」世界王は改めてその問いかけを繰り返すが、リコの手先からも答えが出る気配はない。彼女の目からは視線しか読み取れない静けさだけが流れ出ているようだった。</p>
+        <p>雨粒と湿った空気がただしつつ、リコの指先は止まったまま微かに震えていた。</p>
+
+        <p>音もなく、光もない中での対話は深い闇を描いていった。彼女の手から世界王へ向けられる視線が、その薄暗い箱の中に静かな問いかけを投げかけるように映った。</p>
+        <p>リコの指先とテープとの間には5センチ程という距離があり、それが二人にとって非常に重要な意味を持つようだった。</p>
+
+        <p>「触れれば全てが変化するかもしれない」と世界王は最後にそう告げると、その場から去っていった。残されたのは彼女一人だけ、そして微かな光を放つ箱とそこに置かれた特別なテープだけだ。</p>
+        <p>リコの指先は再び動き出し、静寂の中で5センチという距離を超えて触れる寸前まで近づいたが、最後にはまたその手を引き戻した。</p>
+
+        <p>雨粒が新たな音楽で塔の中へ響き渡る。冷たい空気と湿った街並みの間から聞こえるわずかな音だけが、リコの指先とテープとの間に静かに張られた微妙なバランスを感じさせた。</p>
+        <p>そしてその場面はいつまでも続いていたような気がした。</p>
+
+        <p>その光景を眺めながら、世界王の言葉が彼女の心の中で反芻された。「あなた自身も変わる」という問いかけが今更のように重く響き渡っていた。リコの指先とテープとの距離にこそ全てが詰まっているように思えた。</p>
+        <p>リコはまた静かにその光景を眺めていた、そして彼女の視線から塔の中へ新たな音楽が始まったような気がした。</p>
+
+        <p>雨粒が再び響き渡りながら、世界王の言葉とリコの心の中で渦巻く思考が交錯し始める。彼女自身も変わるという覚悟を固めつつ、同時にその代償にも直面せねばならないという重圧を感じていた。</p>
+
+        <p>「あなたにとってこれ以上必要な何か？」</p>
+        <p>静寂の中での問答はまだ続いていた。</p>
+        <p>リコの指先とテープとの間には5センチ程の距離があり続けたが、それは決断を待つためだけではなく彼女自身への問いかけでもあったような気がした。それからその光景は再び夜の雨粒の中で溶け込んでいった。</p>
+
+        <p>微かな電磁波音の中での静寂に包まれながらリコは深く息を吐き出し、街へと向かって歩み始めた。</p>
+        <p>彼女が手懐けていたカセットプレイヤーから流れる曲がその光景の中に響き渡り、雨粒と共に溶け込んでいった。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-21">
+      <div class="chapter-header">
+        <span class="chapter-number">第21章</span>
+        <h2 class="chapter-title">第一階層：敗れた戦士</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_21.png" alt="第21章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨が静かに上がり、風に乗って遠い街の音楽が聞こえてくる。アスファルトの匂いと湿った石畳からの水気。薄明かりの中、塔の大扉は暗闇へと開く影を描いた。</p>
+
+        <p>リコは足元を見つめながら階段に並ぶ白一色の扉を眺めた。「第一階層」それは世界王が囁きかけてきた言葉だ。</p>
+        <p>「守れなかったこと。それが未完の証拠になる」</p>
+
+        <p>石段の下から上がる微かな気配。</p>
+
+        <p>ガラス張りの間仕切りに映る白い鎧と、その手には握られた剣。倒れた男がそこにいた。全身が雨で濡れており、光を吸収するかのように黒く湿っている。「敗れざる者」と呼ばれる彼らだ。</p>
+        <p>リコは深呼吸をしてゆっくりと歩み寄った。</p>
+
+        <p>「声が出せますか？」</p>
+        <p>静寂の中、その問いかけの微かな音色が響き渡る。鎧に囲まれた男はわずかに首を動かしただけだった。「聞こえています」それは確かに言葉ではなかった。</p>
+        <p>リコは膝を曲げて対面し、目線を合わせた。</p>
+
+        <p>「あなたは何者ですか？」</p>
+        <p>「敗れた戦士。」</p>
+
+        <p>男の声が再び静寂の中へと広がる。</p>
+        <p>「俺たちにはもう力がない。何もかも失った。でも、まだ最後の一撃だけは残っている」</p>
+        <p>言葉とは裏腹に彼の目からは虚無しか読み取れない。</p>
+
+        <p>リコは何も答えずただ黙ってその男を見つめた。「守りたいものは何？」と尋ねた。</p>
+        <p>「君を」</p>
+
+        <p>鎧が揺らぐ音。それは不思議なほど心地よく、雨粒と一緒に落ちてくるようだった。</p>
+        <p>「だが、俺は君の安全を保てない」</p>
+        <p>彼女の頭上から静かに響くその声。</p>
+
+        <p>リコは一瞬言葉を失った。「それでも戦いますか？」と聞くしかなかった。</p>
+        <p>「もう、それは出来なくなった。ただ立つだけで精一杯だ」</p>
+
+        <p>鎧が雨音と共に揺れる。男の肩口から滴る水粒さえも、静寂の中で際立って聞こえた。</p>
+
+        <p>彼女は黙り込んだ。「世界を正そうとしたあなた方」</p>
+        <p>「俺たちはその力を持っていたが故に、何もかも失った」敗れた戦士の声。</p>
+        <p>「君たちの平和な生活があったからこそだ。我々とは違う選択をする者もいる」</p>
+        <p>リコはゆっくりと立ち上がり、「でもそれでも守ろうとした証がある」とつぶやいた。</p>
+
+        <p>「その証は？」彼女の問いかける視線に答え、敗れた戦士の残響が頷くように言った。</p>
+        <p>「刀を抜いて、手綱を握ったことだ」</p>
+
+        <p>リコは何も言葉を返さなかった。ただ黙って立ち去る。</p>
+
+        <p>塔からの光が遠ざかっていく足元を見つめながら、「守れたいものは何？」と自問する彼女の声は誰にも届かない。</p>
+        <p>雨上がりの空に浮かぶ雲が、薄明かりの中では銀色に輝いていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-22">
+      <div class="chapter-header">
+        <span class="chapter-number">第22章</span>
+        <h2 class="chapter-title">第二階層：沈黙の学者</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_22.png" alt="第22章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が細かく降り注ぐ夜。ネオンの光が歪んだアスファルトに映し出す無数の反乱者の影。リコは二階層へと足を踏み入れた。</p>
+
+        <p>回廊には無限とも思えるほどの書架たちが立ち並び、その間からは膨大な知識の匂いが漂ってくる。古本から新刊まで様々な時代の音色が織り交ぜられている。薄暗さの中に浮かぶ文字列は遠くへと伸びる光路のようにも感じられた。</p>
+
+        <p>彼女の前に現れたのは「沈黙の学者」、一人の老人だった。</p>
+        <p>彼は長い白い髪を後ろでまとめている。青銅色に錆びた顔には静かな力強さが宿っていた。しかしその目からは寂しさと孤独しか感じられない。</p>
+
+        <p>「何者ですか？」</p>
+        <p>リコは小声で尋ねる。老人は微かに笑って答えた。</p>
+        <p>「私は世界の真理を見つけ、それを伝えることを夢見た男だ」</p>
+
+        <p>老人は書架から一冊の本を取り出した。「これが私の未完を表すもの」と彼女に向ける。</p>
+
+        <p>白紙の一冊。言葉が消えても残る意志だけが漂うようなそのページから微かな光が漏れ出していた。</p>
+        <p>「この本には、何も記されていない」</p>
+        <p>リコはそう呟きながら指先で一ページめくると、また光が浮かび上がった。</p>
+
+        <p>雨粒の音。ネオンの明かり。回廊を埋める無限とも思える知識たちの息づかい。</p>
+        <p>言葉はない。しかし何か伝えられていたように感じた。</p>
+        <p>彼女の心に広がる沈黙は、老人と同じ孤独さを感じさせていた。</p>
+        <p>リコは白紙の一冊を開き続け、ページごとに光が出る度に手を止める。</p>
+
+        <p>「誰にも伝わらなかった」</p>
+        <p>その静寂の中で老人の言葉だけが聞こえた。それが彼の未完だったと理解すると同時に、リコもまた自分の使命について考えていた。</p>
+        <p>人々には伝えられるものが存在するのか？そしてそれは何なのか？</p>
+
+        <p>雨粒が音を立ててアスファルトに落ちる。光は次第に消えてしまう。</p>
+
+        <p>老人は静かに微笑んだ。「君達の世代は違う」と彼女を見つめる。</p>
+        <p>リコはその顔から目を離せずにいた。言葉が必要ない瞬間だった。</p>
+        <p>彼女の手の中にある白紙の一冊が、微かな光と共に消失していく。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-23">
+      <div class="chapter-header">
+        <span class="chapter-number">第23章</span>
+        <h2 class="chapter-title">第三階層：記録する秘書</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_23.png" alt="第23章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨音が薄暗い廊下の石壁に広がり、その間から時折聞こえるのは遠くで刻まれる鐘の響きだけだった。薄明かりの中でリコは、二階層から続く螺旋階段を上っていく。霧のような空気が彼女の肌を冷たく包み込む。</p>
+
+        <p>「記録する秘書」は三階層の名前であり、その者の存在自体が未完であるという噂があった。不揃いな音色と湿った風と共に、リコは扉を開く。そこには無数の本棚に囲まれた巨大時計仕掛けの部屋があり、真ん中に座る秘書を映し出す。</p>
+
+        <p>青白い顔が細長い瞳でじっと見つめ返す。「記録する秘书」は長年の勤務によって体裁も色褪せていた。彼女の髪は薄暗さに溶け込んだ銀灰色になり、手足の震えからその年齢を窺い知る。</p>
+
+        <p>「何故あなたが？」声は細く掠れ、風に乗って消えていく。「誰かのために生きたかったと」</p>
+
+        <p>リコは静寂の中で秘書の言葉を受け取った。彼女の一冊だけ未完だった理由。それは自己犠牲からくるものではなく、「自分のために」という未完成な願いがその背後にあることを知る。</p>
+
+        <p>「君も同じなんだね」薄暗さに溶けた声。「一冊の白紙を抱えて」</p>
+
+        <p>秘書は震える手でペンを取り、リコに向ける。リコはそれを受け取り、彼女自身の名前を記録帳の一ページ目に書き込んだ。</p>
+        <p>小さな文字が黒いインクと共に広がり、過去と未来が溶け合う。</p>
+
+        <p>「自分のために生きたかった」という秘書の独白は、深い闇の中で浮かび上がる小さな光のように静寂に包まれた。それが彼女の全てだったことを示すように。</p>
+        <p>リコは何も言わずにただペンを握る手だけを動かした。「記録」。</p>
+
+        <p>時計仕掛けがゆっくりと回り始める音と共に、周囲の本棚からページが薄く舞い上がる。</p>
+        <p>その瞬間、秘書は目を見開き、口を開けた。何か言おうとしているようだったが、代わりに黙ってペンを受け取り返した。</p>
+
+        <p>「ありがとう」</p>
+        <p>それは静かではあったが、強く心を揺さぶる響きがあった。</p>
+
+        <p>手の中の白紙一冊だけが風に乗ってリコの胸中に舞い戻り、消えていく。</p>
+        <p>ただ秘書は彼女の顔を見つめ続けた。そして微笑んだ。それが最後の一言となったかのように。</p>
+
+        <p>霧の中で時計仕掛け部屋の光があわや夢のように揺らぎながら遠ざかる。</p>
+        <p>リコは何も言わず階段を降り、雨の中へと戻っていくだけだった。</p>
+        <p>その背後にはもう一冊減った記録帳が静かに残されていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-24">
+      <div class="chapter-header">
+        <span class="chapter-number">第24章</span>
+        <h2 class="chapter-title">第四階層：未来保存室</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_24.png" alt="第24章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒がネオンの光を薄い紗で包み、地面に点々と滴る。夜が静けさと共に深まりゆき、細かな音響が都市全体を満たしているように感じる。アスファルトは寒く湿った匂いで覆われ、遠方から聞こえる雨粒の鼓動が時間の経過を感じさせる。</p>
+
+        <p>リコはカセットプレイヤーに耳を当てながら歩み続ける。音楽と自分の足音だけが交差する静寂の中で、彼女は第四階層へ向かう道筋を見つける。塔の中はより薄暗く、雨粒の軌跡さえも消え去るほど霧深い空間に変わり果てていた。</p>
+
+        <p>「ここに来れば」とリコは囁いた。「未来だね」。</p>
+
+        <p>そこには形もない光の卵たちが浮遊していた。微かな揺らめきと静寂、それこそ未完を包み込む胎内のような場所で、リコは足を止める。白く濁った世界の中で音だけが響き渡る、何か不思議な鼓動。</p>
+
+        <p>「まだ生まれていない未来のあなたたち」と彼女は微笑んだ。「おいで」。</p>
+
+        <p>卵たちは一つまた一つと微かに光り始め、それがリコの言葉を聞き分けているように感じられた。しかし、その一方で未完が形にならず浮遊する理由も理解できるようになる。それは人々がまだ存在しないからであり、未来は未だ訪れていないから。</p>
+
+        <p>「生まれてきていいよ」と彼女は繰り返した。「それがあなたたちの選択なんだ」。</p>
+
+        <p>卵の中からは微かな響きだけが聞こえてくる。何かしら言葉を告げるような音色で、それがリコの心に直接触れるかのように感じられる。未完とはその未来への願いであり、希望でもあり、同時に恐怖や迷いも含む複雑な感情だ。</p>
+
+        <p>「あなたたちが選ぶのは今から先のこと」彼女は再び微笑んだ。「だからこそこの場所が必要なんだよ」</p>
+
+        <p>その言葉の後に続く静寂。リコはただ立っていた。音楽だけが奏でるメロディ、雨粒と卵の微かな光り方、それら全てが一体となった何かを確かに感じる。</p>
+
+        <p>「あなたたちは生まれてきていい」彼女は再び耳元に口付けした。「誰もがそうだよ」</p>
+
+        <p>未来へ続く道はまだ開けず、しかしその先にある未完たちを見つめながらリコは足元のアスファルトから目を離す。光の中での静寂と鼓動、それは何か深い意味を持つようだ。</p>
+
+        <p>彼女は何度もうなずいた。「あなたたちはこれから生まれてくる」と彼女の声が響き渡る。「そしてそれが、世界へ届く一歩なんだ」。</p>
+
+        <p>リコは未来の卵たちに微笑み返す。それから静かに戻り道を進むように指示する。音楽と雨粒が鼓膜の中で奏でられるメロディと共に、彼女はその場所を後にした。</p>
+
+        <p>そして塔の中では再び光る卵たちは微かな揺らめきだけを保ちつつも静寂の中に溶け込んでいった。</p>
+        <p>それがあなたたちの未来という証となった。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-25">
+      <div class="chapter-header">
+        <span class="chapter-number">第25章</span>
+        <h2 class="chapter-title">ゼロテープ</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_25.png" alt="第25章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が街の音階に乗って降り注ぐ夜。ネオン色の線路に灯った電球たちが、遠近法を通じて溶け合うように交差する光景は、まるで古い記憶のフィルムを巻き戻しているかのように静かだった。</p>
+
+        <p>リコは四階層から去り際、再びその場所に戻ってきた。彼女が訪れるのは同じ地でも違う世界。空気には雨に濡れたアスファルトとテープの古い匂いが漂う。寒さが肌を這いずって上がり始めている。</p>
+
+        <p>「またね」とつぶやき、リコは手足の指先で微かな震えを感じる。</p>
+
+        <p>小さなカセットプレイヤーの持ち主である少女にとって、ここには特別な場所があった。「ゼロテープ」。世界最初の未完が詰まっているという、謎めいた存在。</p>
+
+        <p>彼女はその前まで歩みを進めると立ち止まった。手を伸ばすことはしない。触れずとも感じる静寂の中で呼吸するだけだ。遠くで聞こえる風鈴のような音色と、街灯から零れる雨粒の滴り落ちる音が重なる。</p>
+
+        <p>「ここにいる」と彼女は自分の存在感を探し求めるように口にする。「あなたとは違うことを確認したい」</p>
+
+        <p>薄暗さの中で、リコの視線は眼前のテープへ吸い寄せられる。その表面には何か不思議な映像があるかのように見えない光が揺らめく。</p>
+
+        <p>「世界王」。彼女の脳裏に浮かび上がる言葉と共にイメージも現れる。長い白銀の髪、透明に近い淡い灰色の瞳、そして小さな王冠のブローチを胸元につける存在感。</p>
+
+        <p>リコは再びテープから視線を離し、周囲を見回すように首を傾げる。「彼らが望んだ未完とは何か。それを理解したかった」</p>
+
+        <p>雨粒が地面に打つ音と彼女の足音だけの静寂の中で、ゼロテープへ向けた感情は複雑な糸で絡み合うものとなる。</p>
+
+        <p>「あなたから遠ざかっていることを求めている」とリコは口に出して言う。「でもそれが正しいことなのか。」</p>
+
+        <p>手を伸ばすことはしないが、指先では触れられるほどの距離まで近づける。</p>
+
+        <p>彼女の視線は再びテープに吸い寄せられ、その表面からは微かな光と音の残響しか見えない。</p>
+
+        <p>「あなたたちが選んだ未来を選ぶことで私たちは存在する」と彼女は呟く。「それが私の役割」</p>
+
+        <p>リコはゆっくり頭を振り、ゼロテープから視線を離す。雨粒に濡れる黒髪が額にかかり始めている。遠い世界の始まりを感じつつも前を見据える。</p>
+
+        <p>「未来への道を開いた」と彼女は自分自身に告げる。「そしてそれは選択そのもの」</p>
+
+        <p>風鈴のような音色と、街灯から零れる雨粒の滴り落ちる音が再び重なる。微かな光と共にリコはその場を去ろうとする。</p>
+
+        <p>「あなたとの距離を探求することで、私は自分が存在することを証明した」と彼女はつぶやく。「それが私の全て」</p>
+
+        <p>そして、ネオン色に染まるアスファルトの線路へと歩み出す。雨粒が彼女の髪を濡らし始める。風鈴のような音色と、街灯から零れる雨粒の滴り落ちる音が再び重なる。</p>
+
+        <p>「あなたとの距離を探求することで」とリコは自分の足元を見つめながら繰り返す。「それが私の全て」</p>
+
+        <p>遠くへ向かう彼女の背中には、微かな光が追いかけていく。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-26">
+      <div class="chapter-header">
+        <span class="chapter-number">第26章</span>
+        <h2 class="chapter-title">原初のノイズ</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_26.png" alt="第26章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が夜の街路へ落下し、アスファルトに触れると光と音となって広がる。リコの足元では水滴が小さな波紋を作り出し、その中央には微かな明かりが浮かび上がっている。それがゼロテープで、それはただ存在するだけで周囲を冷たく湿らせた。</p>
+
+        <p>「どうしてこんな場所に？」と呟く彼女の声は風に乗って消えてしまうように小さかった。</p>
+        <p>ネオンの光りだけでは捉えることができない微妙な色合いが、その明かりから漏れ出している。リコは近づき、袖で目元を拭う。</p>
+
+        <p>「ここには誰も来ない」</p>
+        <p>雨粒に反射した青と赤が、パーカーの肩先を通じて彼女の頬にかすかな感覚を作り出す。</p>
+        <p>その一方で風は冷たく、夜空からは淡い白銀色の光を放つ月が覗いている。</p>
+
+        <p>リコは口元から小さな音を立てた。ゼロテープへと指を伸ばし、しかし触れずに手を引き戻す。「触れない」という決意で胸を締めつけられる。</p>
+        <p>零時刻近くになると雨粒の落下がやや緩慢に聞こえるようになる。</p>
+
+        <p>静寂の中で突然、「チリチラ」。遠くからだが確かに聞こえてくる音。</p>
+        <p>それは始まりか、終わりなのか？</p>
+        <p>その問いと共に視線はゼロテープへと引き付けられる。</p>
+
+        <p>「ここから先には進まない」</p>
+
+        <p>薄明かりが微細な波動を発していることに気付いたときだった。</p>
+        <p>リコの肌に触れ、全身に響き渡る。音ではなく振動、それは鼓膜でもなければ体全体で感じた何かであった。</p>
+
+        <p>光と熱を感じつつも身体は凍えるような寒さへ引き込まれていく。</p>
+        <p>頭の中が一瞬白くなり、視界を覆うように波状の色合いが広がっていく。「チリチラ」という音と共に全身に伝わる震え。その中心から「原初」への回帰感覚。</p>
+
+        <p>そして再び現実に返されると、静寂と暗闇だけが残っていた。</p>
+        <p>月光を浴びて湿ったアスファルトはさらに冷たさを増していた。</p>
+
+        <p>リコの体からは余韻として僅かな体温が逃げていく。それとともに消えていくものは彼女の懐疑心もまた同じだった。</p>
+        <p>「何かが始まった」</p>
+        <p>そう呟く彼女、その声音には以前よりも深みがあった。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-27">
+      <div class="chapter-header">
+        <span class="chapter-number">第27章</span>
+        <h2 class="chapter-title">王の分裂</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_27.png" alt="第27章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が塔の石壁を伝い落ちる音。夜の都市にはいつものようにネオン色と水滴の光り輝きがある。しかし、その鮮やかさもこの日は曖昧で揺らぐようだ。</p>
+
+        <p>リコの足元では古いカセットプレイヤーが静止している。彼女は何度もうなずいてそれを握る手に力を取り戻す。「大丈夫」と自分自身に言い聞かせる。塔の中から微かな震えが始まり、それが徐々にはっきりとした揺れとなって広がっていく。</p>
+
+        <p>「これが…世界王の分裂」</p>
+        <p>不意に耳元でささやくような声がした。リコは驚いて振り返る。「誰？」</p>
+        <p>しかし視界はまだ何も見えない。</p>
+        <p>雨粒がより強く叩きつけ、塔全体が揺れる。その振動とともに空気が震える。</p>
+
+        <p>「全てを受け入れる側…」</p>
+        <p>耳元の声をもう一度聞くと、それは自分の心の奥底から聞こえてくるようだ。「そして全てを拒む側…」</p>
+
+        <p>リコは足下に視線をおろす。</p>
+        <p>塔の中庭では石像が崩れ落ちていく。その破片が音もなく雨水中へ消えてしまう。</p>
+
+        <p>「世界王よ...」</p>
+        <p>遠くから、もう一つの声が聞こえる。「貴様は一体何者だ？」</p>
+
+        <p>リコの足元でカセットプレイヤーが震える。</p>
+        <p>再び視界を埋めるのは白銀色の髪。長いつながりの中で顔だけを見せる世界王。</p>
+
+        <p>「これが…未完だ」</p>
+        <p>薄ら笑いながら、その体は光と影に分かれていく。「受け入れる側」「拒む側」</p>
+
+        <p>塔全体が揺れる音と共に微かな香りが漂う。それは雨粒の匂いではなく何か別のものだった。</p>
+        <p>リコは何度も瞬きを繰り返す。</p>
+
+        <p>「彼女よ、この光景を見届けて」</p>
+        <p>耳元でささやく声は今では確かに自分の心から聞こえてくる。「何も変わらない」</p>
+
+        <p>体が分かれていく世界王の前でも微笑んでいた。</p>
+        <p>その表情に隠された想いとは？</p>
+
+        <p>塔の中庭。光と影、音と静寂の中で揺れ続ける石像たち。</p>
+
+        <p>「全てを受け入れる側」</p>
+        <p>「そして全てを拒む側」</p>
+
+        <p>リコは再び振り返った。「誰が貴方達の名前を呼んだ？」</p>
+
+        <p>夜空に雨粒が舞い踊りながら塔へ吸い込まれていく。</p>
+        <p>その中で、カセットプレイヤーから微かな音が聞こえてくる。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-28">
+      <div class="chapter-header">
+        <span class="chapter-number">第28章</span>
+        <h2 class="chapter-title">増殖する塔</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_28.png" alt="第28章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が地面の凹みに入り、不規則な旋律を作り出す。アスファルトに反射する青と赤のネオン光が揺れるように動いていた。リコは街中で足どめを取り、周囲を見回した。</p>
+
+        <p>透明な塔が現実層へと次々と突き刺さる始まりだった。雨粒を吸収しながらその存在感を増し、瞬く間に都市のあちこちに広がっていく。</p>
+        <p>人々は驚愕の表情で空に向かい上を見上げていた。</p>
+
+        <p>「あれは何だ？」</p>
+
+        <p>地面から浮かび上がった塔の底には透明なカセットテープが無数にある。その中に願いが閉じ込められ、未完を詰め込んでいた。</p>
+        <p>雨粒と交差しながら軋むような音がした。それは何か物語る。</p>
+
+        <p>「世界王も分裂してしまいましたね」</p>
+
+        <p>耳元から聞こえてきた声にリコは驚きの眼差しで振り返った。「A.C.O.U.S.T」の代表者、男の顔を初めて見た。</p>
+        <p>彼は黒いスーツ姿で、銀色のイヤーピースをつけている。手には常に小さな装置を持っていた。</p>
+
+        <p>「これは……塔が増殖しているんだ」</p>
+
+        <p>「未完による暴走です。何もかも消す必要がありますね」</p>
+        <p>雨粒に反射して街全体を覆う透明な塔を見つめながら代表者が言った。</p>
+        <p>その言葉は静かではあったが、力強さを感じさせるものだった。</p>
+
+        <p>リコの心には複雑な感情があった。「未完」という概念自体を受け入れていたからこそ混乱していた。ただ消すことを選ぶべきなのか？</p>
+        <p>雨粒が彼女の髪を濡らし、カセットプレイヤーからの微かな音楽が静寂に重なる。</p>
+
+        <p>「何も変わらない」</p>
+
+        <p>リコはそう呟きながら歩み出した。</p>
+        <p>塔の林立する街へと向かって。人々が混乱し恐れる光景も、彼女には遠いもののように思えた。</p>
+
+        <p>透明なタワーが空を覆う異様さに身を寄せ合う人びとの群れ。不気味で幻想的な情景だった。</p>
+        <p>リコはその中を歩き続けた。</p>
+
+        <p>「何も変わっていないね」</p>
+
+        <p>再び静寂を割ったのは、男の声ではなく彼女の囁きだった。</p>
+        <p>雨粒が地面から反射し、塔に吸い込まれていく様子。</p>
+
+        <p>空を見上げれば、無数の透明なタワーが並んでいた。街全体が異次元へと侵食されつつあるような光景だ。</p>
+        <p>その視線を受けて人々は一瞬静まり返る。</p>
+
+        <p>「何も変わらない」</p>
+
+        <p>リコだけの呟きだった。それでも彼女は歩み続けた。</p>
+        <p>塔群の中、雨粒に反響する音と共に。</p>
+
+        <p>透明な塔が現実層へと次々と突進し続ける。街全体を覆い尽くすように広がっていく様子を見つめながら、リコの足元にはまだ道があった。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-29">
+      <div class="chapter-header">
+        <span class="chapter-number">第29章</span>
+        <h2 class="chapter-title">消された選択肢</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_29.png" alt="第29章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が、薄暗い街路のアスファルトに次々と落ちていく。青白いネオン灯りが冷たい湿気の中に溶けていくかのように光る。排水溝から漂う金属的な匂い。風は弱く、しかし地面を這いずり回って歩行者の靴音を薄めていた。</p>
+
+        <p>街の中心部では人々が一斉に立ち尽くしている。「選ばなくていい世界」という標語と共に現れた偽王たち。彼らの目的は明白だった——未完という概念そのものを消し去ること、そして全ての人々から自由な選択肢を奪うこと。</p>
+
+        <p>「もう決めなくてもいい」そう言い放ったのはA.C.O.U.S.Tの代表者だろうか。彼の声が響くと同時に街には異様な静寂が広がる。人々はその言葉に包まれ、次々と表情から感情を取り去っていった。「何も選ばなくていい」という空虚な安心感を胸に。</p>
+
+        <p>だがその中に一人だけ違った動きがあった——リコだ。彼女は走り出した。パーカーの袖が風に煽られ、冷たい雨粒を受け止めながらも歩み続ける足取りだった。</p>
+        <p>「彼らだって選べる権利がある」彼女の唇からは静かな声が出た。「何も決めなくてもいい、なんて世界じゃいられない」</p>
+
+        <p>リコは次々と偽王たちの前に立ちはだかる。彼らが人々から選び方を奪おうとする度に、彼女はその脇へ回り込んで「選ぶ権利」について耳打ちする。</p>
+        <p>「自分自身で決めるべきだっていうこと」そう何度も囁く。「どんな困難でも、何を選んでもいいんだよ」</p>
+
+        <p>雨粒がリコの頬を伝う。人々の中から次々と顔が無表情になっていく様子は見ていて辛かった——まるで人間らしさすら失われていったかのように。</p>
+        <p>だがその中でも彼女には一筋の光があった。「選ぶ」ことを忘れてしまった者たちに、リコはそれを見つけるための道を示していた。</p>
+
+        <p>「何も決めなくてもいいなんて世界じゃ生きられないよ」と、一人の人間に向かって告げる。その人の目が僅かながら潤んだ瞬間がある。</p>
+        <p>それがどれだけ少ないことだったとしても——それでも、彼女にとってそれは大切な光であり続けた。「この街には自由を選ぶべき人がいる」リコはそう心に刻む。</p>
+
+        <p>冷たい風と雨粒を浴びながら走り続ける少女の背中。その姿が薄暗いネオン灯りの中で浮かび上がる。</p>
+        <p>「誰もあなたのために決めることはないよ」と、最後の人間に向けて告げる。「自分だけの道を選べる」</p>
+        <p>彼女の声は弱々しく響いたが——それでもそれは人々に届く光だった。</p>
+
+        <p>そしてリコは走った。夜の雨と音楽の中で、一人でも多くの人にその選択を伝えようと。</p>
+        <p>静かな抗いとしての足取りだ。未完という概念から自由を得るための最後の砦であり続けた。</p>
+
+        <p>ネオン灯りが揺らめきながらも、リコは無表情の人々の中を走った——彼女一人だけがその街の中でまだ感情を持ち続ける者だった。</p>
+        <p>「選んでいい」そう呟くと同時に、もう一歩前へ進む足取り。光の雨粒に紛れて。</p>
+
+        <p>霧のように薄暗い夜空は、静かにリコを包み込んだ——この瞬間が、その先にある何かが始まる予感があった。</p>
+        <p>そして彼女は走り続けることを決めた。「何も変わらない」そう心の中で繰り返しながら。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-30">
+      <div class="chapter-header">
+        <span class="chapter-number">第30章</span>
+        <h2 class="chapter-title">冠の重さ</h2>
+      </div>
+      
+        <div class="chapter-image">
+          <img src="images/chapter_30.png" alt="第30章 挿絵"
+               loading="lazy" />
+        </div>
+      <div class="chapter-body">
+        <p>雨粒が石畳の路地に滑るように落ちていく。水たまりから反射するネオンの光、青と赤の渦巻き。リコは疲れた息を吐いて膝をついた。アスファルトに湿った足音だけが響く。</p>
+
+        <p>「もうこれ以上、私一人でいけるのかな……」</p>
+
+        <p>彼女は呟くように口を開いた。声も雨粒のように消えていく。手の中の古いカセットプレイヤー、その金属感覚が温かさを帯び始める。</p>
+        <p>リコはポケットからそれを取り出す。</p>
+
+        <p>「誰だっけ？　ここにいるのは……」</p>
+
+        <p>彼女は目を見開いた。小さな光点が画面の中に浮き上がる。一人の戦士だった。汚れた制服、傷ついた盾。「私たちは世界を正そうとしただけです」という言葉。</p>
+        <p>次には学者の顔が現れる。「未完とは何かを探求したかった」</p>
+        <p>秘書の静かな姿も映る。「人のためになることはやり遂げたい」</p>
+
+        <p>カセットプレイヤーの中、様々な光景が浮かび上がる。未来への希望を抱いた子供たち。</p>
+        <p>その一人一人には「叶えられなかったこと」という名前の冠がある。</p>
+
+        <p>リコは立ち上がった。雨粒に包まれる髪と目を見開く。</p>
+
+        <p>「でも……だからこそね」</p>
+
+        <p>彼女は笑みを浮かべた。</p>
+
+        <p>「重いから、価値あるんだよ」</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>世界王 ― Echoes of the Forgotten</p>
+    <p>Generated locally with Ollama + Stable Diffusion</p>
+  </footer>
+
+  <button class="mode-toggle" onclick="toggleMode()">🌗 表示切替</button>
+
+  <script>
+    // Reading mode
+    function toggleMode() {
+      document.body.classList.toggle('light');
+      localStorage.setItem('mode', document.body.classList.contains('light') ? 'light' : 'dark');
+    }
+    if (localStorage.getItem('mode') === 'light') document.body.classList.add('light');
+
+    // Scroll progress
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      document.getElementById('progress').style.width = pct + '%';
+    });
+  </script>
+</body>
+</html>
